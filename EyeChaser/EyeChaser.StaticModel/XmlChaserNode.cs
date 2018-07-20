@@ -1,0 +1,154 @@
+﻿using EyeChaser.Api;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Xml;
+
+namespace EyeChaser.StaticModel
+{
+    public class XmlChaserNode : IChaserNode<XmlChaserNode>
+    {
+        static readonly List<XmlChaserNode> _empty = new List<XmlChaserNode>();
+
+        List<XmlChaserNode> _children;
+
+        public string Caption { get; set; }
+
+        public string SortKey => Caption;
+
+        public double Probability { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public bool IsChildrenPopulated { get; private set; }
+
+        public IEnumerator<XmlChaserNode> GetEnumerator()
+        {
+            return (_children ?? _empty).GetEnumerator();
+        }
+
+        public void Add(XmlChaserNode node)
+        {
+            if (_children == null)
+            {
+                _children = new List<XmlChaserNode>();
+            }
+
+            _children.Add(node);
+        }
+
+        public Task RefreshChildrenAsync()
+        {
+            return Task.FromResult(0);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement(null, "Node", null);
+            writer.WriteAttributeString(null, nameof(Caption), null, Caption);
+            writer.WriteAttributeString(null, nameof(Probability), null, Probability.ToString());
+
+            if (_children != null)
+            {
+                foreach (var child in _children)
+                {
+                    child.WriteXml(writer);
+                }
+            }
+
+            writer.WriteEndElement();
+        }
+
+        public async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "Node", null);
+            await writer.WriteAttributeStringAsync(null, nameof(Caption), null, Caption);
+            await writer.WriteAttributeStringAsync(null, nameof(Probability), null, Probability.ToString());
+
+            if (_children != null)
+            {
+                foreach (var child in _children)
+                {
+                    await child.WriteXmlAsync(writer);
+                }
+            }
+
+            await writer.WriteEndElementAsync();
+        }
+
+        public static XmlChaserNode ReadXml(XmlReader reader)
+        {
+            while (!reader.IsStartElement("Node") && reader.Read()) ;
+
+            var caption = reader.GetAttribute(nameof(Caption));
+            var probabilityString = reader.GetAttribute(nameof(Probability));
+            var probability = double.Parse(probabilityString);
+
+            var root = new XmlChaserNode { Caption = caption, Probability = probability };
+
+            if (reader.IsEmptyElement)
+            {
+                reader.Read();
+            }
+            else
+            {
+                while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+                {
+                    if (reader.IsStartElement("Node"))
+                    {
+                        var child = ReadXml(reader);
+                        root.Add(child);
+                    }
+                }
+            }
+
+            return root;
+        }
+
+        public static async Task<XmlChaserNode> ReadXmlAsync(XmlReader reader)
+        {
+            while (!reader.IsStartElement("Node") && await reader.ReadAsync()) ;
+
+            var caption = reader.GetAttribute(nameof(Caption));
+            var probabilityString = reader.GetAttribute(nameof(Probability));
+            var probability = double.Parse(probabilityString);
+
+            var root = new XmlChaserNode { Caption = caption, Probability = probability };
+
+            if (reader.IsEmptyElement)
+            {
+                await reader.ReadAsync();
+            }
+            else
+            {
+                while (await reader.ReadAsync() && reader.NodeType != XmlNodeType.EndElement)
+                {
+                    if (reader.IsStartElement("Node"))
+                    {
+                        var child = await ReadXmlAsync(reader);
+                        root.Add(child);
+                    }
+                }
+            }
+
+            return root;
+        }
+    }
+}
