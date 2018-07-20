@@ -18,7 +18,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0" Text="{x:Bind Node.Caption, Mode=OneWay}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <local:BoxChildrenControl Grid.Column="1" ParentNode="{x:Bind Node, Mode=OneWay}"/>
+                <local:BoxChildrenControl Grid.Column="1" ProbabilityLimit="{x:Bind ProbabilityLimit}" ParentNode="{x:Bind Node, Mode=OneWay}"/>
             </Grid>
         </Border>
     </Grid>
