@@ -1,4 +1,5 @@
 ﻿using EyeChaser.StaticModel;
+using EyeChaser.Transforms;
 using System;
 using System.IO;
 using System.Xml;
@@ -31,7 +32,7 @@ namespace EyeChaser.TestShell
             var reader = XmlReader.Create(stream, settings);
             var root = await XmlChaserNode.ReadXmlAsync(reader);
 
-            BoxControl.ParentNode = root;
+            BoxControl.ParentNode = new AlphabeticChaserNode(root, 0.02);
         }
     }
 }

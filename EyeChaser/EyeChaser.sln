@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.TestShell", "EyeC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.MokeDataMaker", "EyeChaser.MokeDataMaker\EyeChaser.MokeDataMaker.csproj", "{6A1559A3-E660-489B-9C47-A330907487C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.Transforms", "EyeChaser.Transforms\EyeChaser.Transforms.csproj", "{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,22 @@ Global
 		{6A1559A3-E660-489B-9C47-A330907487C2}.Release|x86.ActiveCfg = Release|x86
 		{6A1559A3-E660-489B-9C47-A330907487C2}.Release|x86.Build.0 = Release|x86
 		{6A1559A3-E660-489B-9C47-A330907487C2}.Release|x86.Deploy.0 = Release|x86
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|x64.Build.0 = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Debug|x86.Build.0 = Debug|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|ARM.Build.0 = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|x64.ActiveCfg = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|x64.Build.0 = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|x86.ActiveCfg = Release|Any CPU
+		{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
