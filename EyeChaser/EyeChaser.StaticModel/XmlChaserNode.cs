@@ -14,6 +14,8 @@ namespace EyeChaser.StaticModel
 
         List<XmlChaserNode> _children;
 
+        public XmlChaserNode Parent { get; private set; }
+
         public string Caption { get; set; }
 
         public string SortKey => Caption;
@@ -46,7 +48,14 @@ namespace EyeChaser.StaticModel
                 _children = new List<XmlChaserNode>();
             }
 
-            _children.Add(node);
+            var limit = _children.Count;
+            while (0 < limit && _children[limit - 1].Probability < node.Probability)
+            {
+                limit--;
+            }
+            _children.Insert(limit, node);
+
+            node.Parent = this;
         }
 
         public Task RefreshChildrenAsync()
@@ -117,6 +126,7 @@ namespace EyeChaser.StaticModel
                         root.Add(child);
                     }
                 }
+                reader.Read();
             }
 
             return root;
@@ -146,6 +156,7 @@ namespace EyeChaser.StaticModel
                         root.Add(child);
                     }
                 }
+                await reader.ReadAsync();
             }
 
             return root;

@@ -20,13 +20,25 @@ namespace EyeChaser.StaticModel.Test
             var expectedEnumerator = expected.GetEnumerator();
             var actualEnumerator = actual.GetEnumerator();
 
+            var maxProbability = 1.0;
+            var probabilitySum = 0.0;
             while (expectedEnumerator.MoveNext())
             {
                 Assert.IsTrue(actualEnumerator.MoveNext());
 
-                CheckSame((IChaserNode)expectedEnumerator.Current, (IChaserNode)actualEnumerator.Current);
+                var expectedChild = (IChaserNode)expectedEnumerator.Current;
+                var actualChild = (IChaserNode)actualEnumerator.Current;
+
+                CheckSame(expectedChild, actualChild);
+
+                Assert.IsTrue(expectedChild.Probability <= maxProbability);
+                maxProbability = expectedChild.Probability;
+                probabilitySum += expectedChild.Probability;
             }
             Assert.IsFalse(actualEnumerator.MoveNext());
+
+            Assert.IsTrue(0 <= maxProbability);
+            Assert.IsTrue(probabilitySum <= 1.0);
         }
 
         [TestMethod]
