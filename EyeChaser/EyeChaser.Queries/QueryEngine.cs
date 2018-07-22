@@ -5,11 +5,24 @@ namespace EyeChaser.Queries
 {
     public abstract class QueryEngine : IChaserQuery
     {
+        ChaserQueryNodeOffset _lowerBound;
+
+        ChaserQueryNodeOffset _upperBound;
+
         public IChaserQueryNode Root { get; private set; }
 
         public double MinimumQueryProbability { get; set; } = 0.05;
 
         public double MinimumCumulatativeProbabilityTotal { get; set; } = 0.95;
+
+        internal QueryEngine(ChaserQueryNode root)
+        {
+            Root = root;
+            root.QueryCommulativeProbability = 0;
+            root.QueryProbability = 1;
+            _lowerBound = new ChaserQueryNodeOffset(Root, 0);
+            _upperBound = new ChaserQueryNodeOffset(Root, 1);
+        }
 
         public ChaserQueryNodeOffset MapToChild(ChaserQueryNodeOffset parent)
         {

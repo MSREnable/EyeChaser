@@ -1,10 +1,5 @@
-﻿using EyeChaser.Queries;
-using EyeChaser.StaticModel;
+﻿using EyeChaser.StaticModel;
 using EyeChaser.Transforms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -13,11 +8,11 @@ namespace EyeChaser.Queries
     public class XmlChaserQueryEngine : QueryEngine
     {
         XmlChaserQueryEngine(ChaserQueryNode root)
+            : base(root)
         {
-
         }
 
-        static async Task<XmlChaserQueryEngine> CreateAsync(XmlReader reader)
+        public static async Task<XmlChaserQueryEngine> CreateAsync(XmlReader reader)
         {
             var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
             var sortedRoot = new AlphabeticChaserNode(xmlRoot, 0.0);

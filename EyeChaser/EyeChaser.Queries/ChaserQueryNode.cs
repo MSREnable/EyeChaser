@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using EyeChaser.Api;
+﻿using EyeChaser.Api;
 using EyeChaser.StaticModel;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EyeChaser.Queries
 {
@@ -58,9 +58,9 @@ namespace EyeChaser.Queries
             }
         }
 
-        public double QueryProbability => throw new System.NotImplementedException();
+        public double QueryProbability { get; internal set; }
 
-        public double QueryCommulativeProbability => throw new System.NotImplementedException();
+        public double QueryCommulativeProbability { get; internal set; }
 
         public IReadOnlyList<IChaserQueryNode> QueryChildren => throw new System.NotImplementedException();
 
