@@ -5,10 +5,10 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D352E70-3413-42FB-8FF6-0C20BEB5D51D}</ProjectGuid>
+    <ProjectGuid>{3F4AFBAE-4332-42DC-B8CD-A76420BD14DC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EyeChaser.StaticModel</RootNamespace>
-    <AssemblyName>EyeChaser.StaticModel</AssemblyName>
+    <RootNamespace>EyeChaser.Queries</RootNamespace>
+    <AssemblyName>EyeChaser.Queries</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,20 +38,10 @@
       <Project>{3fa06303-8e51-4cbb-8d16-9623bdb9df5e}</Project>
       <Name>EyeChaser.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EyeChaser.Queries\EyeChaser.Queries.csproj">
-      <Project>{3f4afbae-4332-42dc-b8cd-a76420bd14dc}</Project>
-      <Name>EyeChaser.Queries</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EyeChaser.Transforms\EyeChaser.Transforms.csproj">
-      <Project>{f95b1378-bb84-43c7-83a3-2cdff3a2d08b}</Project>
-      <Name>EyeChaser.Transforms</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChaserQueryNode.cs" />
-    <Compile Include="XmlChaserNode.cs" />
+    <Compile Include="QueryEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlChaserQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>
