@@ -1,4 +1,5 @@
 ﻿using EyeChaser.Queries;
+using EyeChaser.StaticModel;
 using EyeChaser.Transforms;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace EyeChaser.StaticModel
+namespace EyeChaser.Queries
 {
     public class XmlChaserQueryEngine : QueryEngine
     {

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EyeChaser.Api;
+using EyeChaser.StaticModel;
 
-namespace EyeChaser.StaticModel
+namespace EyeChaser.Queries
 {
     internal class ChaserQueryNode : IChaserQueryNode
     {
