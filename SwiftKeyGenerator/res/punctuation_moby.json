@@ -1,0 +1,21 @@
+{
+    "lang" : "mo_BY",
+    "sections" : [
+        {
+            "charRules": [
+                {
+                    "CharRule": {
+                        "id": [
+                            "#"
+                        ],
+                        "actions": [
+                            "INS_SPACE_AFTER",
+                            "INS_SPACE_AFTER"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "dependency" : "default"
+}
