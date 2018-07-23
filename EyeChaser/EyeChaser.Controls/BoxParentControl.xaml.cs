@@ -14,6 +14,9 @@ namespace EyeChaser.Controls
         public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxParentControl),
             new PropertyMetadata(0.01));
 
+        public readonly DependencyProperty HideSpacesProperty = DependencyProperty.Register(nameof(HideSpaces), typeof(bool), typeof(BoxChildrenControl),
+            new PropertyMetadata(false));
+
         public BoxParentControl()
         {
             this.InitializeComponent();
@@ -29,6 +32,12 @@ namespace EyeChaser.Controls
         {
             get { return (double)GetValue(ProbabilityLimitProperty); }
             set { SetValue(ProbabilityLimitProperty, value); }
+        }
+
+        public bool HideSpaces
+        {
+            get { return (bool)GetValue(HideSpacesProperty); }
+            set { SetValue(HideSpacesProperty, value); }
         }
     }
 }
