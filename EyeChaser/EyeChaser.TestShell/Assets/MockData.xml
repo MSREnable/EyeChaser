@@ -564,7 +564,7 @@
         </Node>
         <Node Caption="love" Probability="0.04" allText="I love" cumulative="0.0064" >
             <Node Caption="?" Probability="0.01" allText="I love ?" cumulative="0.0001" />
-            <Node Caption="" Probability="0.01" allText="I love " cumulative="0.0001" />
+            <Node Caption="X" Probability="0.01" allText="I love X" cumulative="0.0001" />
             <Node Caption="?" Probability="0.01" allText="I love ?" cumulative="0.0001" />
             <Node Caption="a" Probability="0.01" allText="I love a" cumulative="0.0001" />
             <Node Caption="her" Probability="0.02" allText="I love her" cumulative="0.0001" />
