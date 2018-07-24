@@ -21,6 +21,7 @@ namespace EyeChaser.Queries
             _node = node;
             _packingAlgorithm = packingAlgorithm;
             _coords = coords;
+            IsUpdateNeeded = true;
         }
 
         public int Generation { get; internal set; }
@@ -37,7 +38,7 @@ namespace EyeChaser.Queries
         
         public IReadOnlyList<IChaserQueryNode<Coords>> QueryChildren => throw new System.NotImplementedException();
 
-        public bool IsUpdateNeeded => throw new System.NotImplementedException();
+        public bool IsUpdateNeeded { get; private set; }
 
         public async Task UpdateAsync()
         {
@@ -69,7 +70,6 @@ namespace EyeChaser.Queries
                     _list.Add(new ChaserQueryNode<Coords>(blahNode, _packingAlgorithm, _coords));
                 }
             });
-
-        }
+        }   
     }
 }

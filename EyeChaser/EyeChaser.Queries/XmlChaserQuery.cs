@@ -20,7 +20,7 @@ namespace EyeChaser.Queries
         {
             var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
             var sortedRoot = new AlphabeticChaserNode(xmlRoot, minProbThreshold);
-            var root = new ChaserQueryNode<Range1D>(xmlRoot, Renormalize, Tuple.Create(0.0, 1.0));
+            var root = new ChaserQueryNode<Range1D>(sortedRoot, Renormalize, Tuple.Create(0.0, 1.0));
             var engine = new XmlChaserQueryEngine(root);
             return engine;
         }

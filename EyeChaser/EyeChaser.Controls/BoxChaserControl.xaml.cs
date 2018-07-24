@@ -1,5 +1,6 @@
 ﻿using EyeChaser.Api;
 using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -8,9 +9,10 @@ using Windows.UI.Xaml.Controls;
 namespace EyeChaser.Controls
 {
     using Range1D = Tuple<double, double>;
+
     public sealed partial class BoxChildrenControl : UserControl
     {
-        public readonly DependencyProperty ParentNodeProperty = DependencyProperty.Register(nameof(ParentNode), typeof(IChaserNode), typeof(BoxChildrenControl),
+        public readonly DependencyProperty ParentNodeProperty = DependencyProperty.Register(nameof(ParentNode), typeof(IChaserQueryNode<Range1D>), typeof(BoxChildrenControl),
             new PropertyMetadata(null, ParentNodeChanged));
 
         public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxChildrenControl),
@@ -22,6 +24,8 @@ namespace EyeChaser.Controls
         public BoxChildrenControl()
         {
             this.InitializeComponent();
+
+            SizeChanged += (s, e) => { var t = DrawChildrenAsync(); };
         }
 
         public IChaserQueryNode<Range1D> ParentNode
@@ -45,22 +49,26 @@ namespace EyeChaser.Controls
         static void ParentNodeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (BoxChildrenControl)d;
-            control.DrawChildren();
+            var t = control.DrawChildrenAsync();
         }
 
-        void DrawChildren()
+        async Task DrawChildrenAsync()
         {
-            TheGrid.RowDefinitions.Clear();
-            TheGrid.Children.Clear();
+            TheCanvas.Children.Clear();
 
             var parent = ParentNode;
 
-            if (parent != null)
+            var height = ActualHeight;
+
+            if (parent != null && !double.IsNaN(height))
             {
                 var limit = ProbabilityLimit;
 
-                var row = 0;
-                var skippedProbabilitySum = 0.0;
+                if (parent.IsUpdateNeeded)
+                {
+                    await parent.UpdateAsync();
+                }
+
                 foreach (IChaserQueryNode<Range1D> child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
@@ -68,33 +76,18 @@ namespace EyeChaser.Controls
                     double onScreenProb = Math.Min(1.0, child.QueryCoords.Item2) - Math.Max(0.0, child.QueryCoords.Item1);
                     if (onScreenProb >= limit)
                     {
-                        if (!HideSpaces && skippedProbabilitySum != 0)
+                        double overallProb = child.QueryCoords.Item2 - child.QueryCoords.Item1;
+                        var control = new BoxParentControl
                         {
-                            var rowDefinitionExtra = new RowDefinition { Height = new GridLength(skippedProbabilitySum, GridUnitType.Star) };
-                            TheGrid.RowDefinitions.Add(rowDefinitionExtra);
-                            row++;
-                        }
+                            Node = child,
+                            ProbabilityLimit = limit / overallProb,
+                            Height = height * overallProb
+                        };
 
-                        var rowDefinition = new RowDefinition { Height = new GridLength(onScreenProb, GridUnitType.Star) };
-                        TheGrid.RowDefinitions.Add(rowDefinition);
-                        // Scale by total size including any offscreen portion
-                        var control = new BoxParentControl { Node = child, ProbabilityLimit = limit / (child.QueryCoords.Item2 - child.QueryCoords.Item1) };
-                        Grid.SetRow(control, row);
-                        TheGrid.Children.Add(control);
-                        row++;
-                        skippedProbabilitySum = 0.0;
-                    }
-                    else
-                    {
-                        skippedProbabilitySum += onScreenProb;
-                    }
-                }
+                        Canvas.SetTop(control, height * child.QueryCoords.Item1);
 
-                if (!HideSpaces && skippedProbabilitySum != 0)
-                {
-                    var rowDefinitionExtra = new RowDefinition { Height = new GridLength(skippedProbabilitySum, GridUnitType.Star) };
-                    TheGrid.RowDefinitions.Add(rowDefinitionExtra);
-                    row++;
+                        TheCanvas.Children.Add(control);
+                    }
                 }
             }
         }

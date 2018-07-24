@@ -1,5 +1,4 @@
-﻿using EyeChaser.StaticModel;
-using EyeChaser.Transforms;
+﻿using EyeChaser.Queries;
 using System;
 using System.IO;
 using System.Xml;
@@ -30,7 +29,9 @@ namespace EyeChaser.TestShell
             var stream = await file.OpenStreamForReadAsync();
             var settings = new XmlReaderSettings { Async = true };
             var reader = XmlReader.Create(stream, settings);
-            var engine = await EyeChaser.Queries.XmlChaserQueryEngine.CreateAsync(reader, 0.02);
+
+            var engine = await XmlChaserQueryEngine.CreateAsync(reader);
+
             BoxControl.ParentNode = engine.Root;
         }
     }

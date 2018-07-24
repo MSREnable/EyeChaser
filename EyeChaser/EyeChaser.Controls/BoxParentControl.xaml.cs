@@ -11,7 +11,7 @@ namespace EyeChaser.Controls
 
     public sealed partial class BoxParentControl : UserControl
     {
-        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserNode), typeof(BoxParentControl),
+        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserQueryNode<Range1D>), typeof(BoxParentControl),
             new PropertyMetadata(null));
 
         public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxParentControl),
