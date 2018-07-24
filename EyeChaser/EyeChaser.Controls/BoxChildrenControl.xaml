@@ -9,6 +9,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Canvas x:Name="TheCanvas"/>
+    <Canvas x:Name="TheCanvas" Background="Transparent"/>
 
 </UserControl>

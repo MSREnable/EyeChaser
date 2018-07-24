@@ -1,7 +1,9 @@
 ﻿using EyeChaser.Api;
 using System;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -41,6 +43,18 @@ namespace EyeChaser.Controls
         {
             get { return (bool)GetValue(HideSpacesProperty); }
             set { SetValue(HideSpacesProperty, value); }
+        }
+
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            var position = e.GetCurrentPoint(this).Position;
+            if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
+            {
+                Debug.WriteLine($"Touched {Node.Caption} at {position.Y / ActualHeight}");
+
+                e.Handled = true;
+            }
+            base.OnPointerPressed(e);
         }
     }
 }

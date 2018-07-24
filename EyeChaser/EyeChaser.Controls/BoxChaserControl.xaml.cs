@@ -1,8 +1,10 @@
 ﻿using EyeChaser.Api;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -52,6 +54,18 @@ namespace EyeChaser.Controls
             var t = control.DrawChildrenAsync();
         }
 
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            var position = e.GetCurrentPoint(this).Position;
+            if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
+            {
+                Debug.WriteLine($"Touched {ParentNode.Caption} at {position.Y / ActualHeight}");
+
+                e.Handled = true;
+            }
+            base.OnPointerPressed(e);
+        }
+
         async Task DrawChildrenAsync()
         {
             TheCanvas.Children.Clear();
@@ -79,6 +93,7 @@ namespace EyeChaser.Controls
                         double overallProb = child.QueryCoords.Item2 - child.QueryCoords.Item1;
                         var control = new BoxParentControl
                         {
+                            Width = ActualWidth,
                             Node = child,
                             ProbabilityLimit = limit / overallProb,
                             Height = height * overallProb

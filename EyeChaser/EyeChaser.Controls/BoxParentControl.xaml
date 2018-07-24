@@ -9,19 +9,19 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-        <Border BorderBrush="Gray" BorderThickness="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+    <Grid Background="Transparent">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
+            <Border BorderBrush="Gray" BorderThickness="1">
                 <Viewbox StretchDirection="DownOnly">
                     <TextBlock Grid.Column="0" Text="{x:Bind Node.Caption, Mode=OneWay}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Viewbox>
-                <local:BoxChildrenControl Grid.Column="1" ProbabilityLimit="{x:Bind ProbabilityLimit}" ParentNode="{x:Bind Node, Mode=OneWay}" HideSpaces="{x:Bind HideSpaces, Mode=OneWay}"/>
-            </Grid>
-        </Border>
+            </Border>
+            <local:BoxChildrenControl Grid.Column="1" ProbabilityLimit="{x:Bind ProbabilityLimit}" ParentNode="{x:Bind Node, Mode=OneWay}" HideSpaces="{x:Bind HideSpaces, Mode=OneWay}"/>
+        </Grid>
     </Grid>
 </UserControl>
