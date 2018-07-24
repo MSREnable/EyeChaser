@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EyeChaser.Api
@@ -6,7 +7,7 @@ namespace EyeChaser.Api
     /// <summary>
     /// Tree from chaser query node.
     /// </summary>
-    public interface IChaserQueryNode
+    public interface IChaserQueryNode<Coords>
     {
         /// <summary>
         /// The generation number of the node, being parent's generation plus one.
@@ -16,7 +17,7 @@ namespace EyeChaser.Api
         /// <summary>
         /// The parent query node.
         /// </summary>
-        IChaserQueryNode Parent { get; }
+        IChaserQueryNode<Coords> Parent { get; }
 
         /// <summary>
         /// The display caption for the node.
@@ -24,40 +25,15 @@ namespace EyeChaser.Api
         string Caption { get; }
 
         /// <summary>
-        /// Unique key that can be used to sort nodes into a display order.
+        /// Collection of the node's children being part of the query
         /// </summary>
-        string SortKey { get; }
-
-        /// <summary>
-        /// Probability of node among all peers.
-        /// </summary>
-        double PeerProbability { get; }
-
-        /// <summary>
-        /// Commulative peer probabilities withing sorted order of peers.
-        /// </summary>
-        double PeerCommulativeProbability { get; }
-
-        /// <summary>
-        /// Collection of all the node's children.
-        /// </summary>
-        IReadOnlyList<IChaserQueryNode> Children { get; }
+        IReadOnlyList<IChaserQueryNode<Coords>> Children { get; }
 
         /// <summary>
         /// The probability of node within the query results.
         /// </summary>
-        double QueryProbability { get; }
-
-        /// <summary>
-        /// The commulative probability sum of the preceding query probabilities, which may be negative.
-        /// </summary>
-        double QueryCommulativeProbability { get; }
-
-        /// <summary>
-        /// Access to the children that are part of the query.
-        /// </summary>
-        IReadOnlyList<IChaserQueryNode> QueryChildren { get; }
-
+        Coords QueryCoords { get; }
+    
         /// <summary>
         /// Is the node's children ready for iteration.
         /// </summary>

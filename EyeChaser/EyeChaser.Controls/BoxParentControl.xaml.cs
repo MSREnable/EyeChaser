@@ -1,4 +1,5 @@
 ﻿using EyeChaser.Api;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -6,6 +7,8 @@ using Windows.UI.Xaml.Controls;
 
 namespace EyeChaser.Controls
 {
+    using Range1D = Tuple<double, double>;
+
     public sealed partial class BoxParentControl : UserControl
     {
         public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserNode), typeof(BoxParentControl),
@@ -22,9 +25,9 @@ namespace EyeChaser.Controls
             this.InitializeComponent();
         }
 
-        public IChaserNode Node
+        public IChaserQueryNode<Range1D> Node
         {
-            get { return (IChaserNode)GetValue(NodeProperty); }
+            get { return (IChaserQueryNode<Range1D>)GetValue(NodeProperty); }
             set { SetValue(NodeProperty, value); }
         }
 

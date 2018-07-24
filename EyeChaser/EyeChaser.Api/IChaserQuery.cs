@@ -3,12 +3,12 @@
     /// <summary>
     /// Interface defining chaser query mechanism.
     /// </summary>
-    public interface IChaserQuery
+    public interface IChaserQuery<Coords>
     {
         /// <summary>
         /// The root of the query tree.
         /// </summary>
-        IChaserQueryNode Root { get; }
+        IChaserQueryNode<Coords> Root { get; }
 
         /// <summary>
         /// The minimum probability of a node to be included in the tree.
@@ -31,7 +31,7 @@
         /// <param name="middle">The node at the center point of the query.</param>
         /// <param name="offset">The offset within the node of the center point.</param>
         /// <param name="bounding">THe offset plus and minus from the center point to include in the query results.</param>
-        void Requery(IChaserQueryNode middle, double offset, double bounding);
+        void Requery(IChaserQueryNode<Coords> middle, double offset, double bounding);
 
         /// <summary>
         /// Rejig the tree to reflect a new query.
@@ -40,7 +40,7 @@
         /// <param name="lowerOffset">The offset within the lower limit to represent the lower limit of the tree.</param>
         /// <param name="upperLimit">The node at the upper limit of the query.</param>
         /// <param name="upperOffset">The offset within the upper limit to represent the uppwer limit of the tree.</param>
-        void Requery(IChaserQueryNode lowerLimit, double lowerOffset, IChaserQueryNode upperLimit, double upperOffset);
+        void Requery(IChaserQueryNode<Coords> lowerLimit, double lowerOffset, IChaserQueryNode<Coords> upperLimit, double upperOffset);
 
         /// <summary>
         /// Convert a reference to a child node to one in its parent.

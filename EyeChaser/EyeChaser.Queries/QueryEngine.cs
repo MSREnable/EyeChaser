@@ -3,31 +3,28 @@ using System;
 
 namespace EyeChaser.Queries
 {
-    public abstract class QueryEngine : IChaserQuery
+    using Range1D = Tuple<double, double>;
+    public abstract class QueryEngine : IChaserQuery<Range1D>
     {
         ChaserQueryNodeOffset _lowerBound;
 
         ChaserQueryNodeOffset _upperBound;
 
-        public IChaserQueryNode Root { get; private set; }
+        public IChaserQueryNode<Range1D> Root { get; private set; }
 
         public double MinimumQueryProbability { get; set; } = 0.05;
 
         public double MinimumCumulatativeProbabilityTotal { get; set; } = 0.95;
 
-        internal QueryEngine(ChaserQueryNode root)
+        internal QueryEngine(ChaserQueryNode<Range1D> root)
         {
             Root = root;
-            root.QueryCommulativeProbability = 0;
-            root.QueryProbability = 1;
             _lowerBound = new ChaserQueryNodeOffset(Root, 0);
             _upperBound = new ChaserQueryNodeOffset(Root, 1);
         }
 
         public ChaserQueryNodeOffset MapToChild(ChaserQueryNodeOffset parent)
         {
-            var child = parent;
-
             var parentOffset = parent.Offset;
 
             if (!(0 <= parentOffset && parentOffset <= 1))
@@ -39,22 +36,22 @@ namespace EyeChaser.Queries
 
             if (!parentNode.IsUpdateNeeded)
             {
-                using (var enumerator = parentNode.QueryChildren.GetEnumerator())
+                using (var enumerator = parentNode.Children.GetEnumerator())
                 {
                     if (enumerator.MoveNext())
                     {
                         var candidate = enumerator.Current;
-                        while (candidate.QueryCommulativeProbability + candidate.QueryProbability < parentOffset && enumerator.MoveNext())
+                        while (candidate.QueryCoords.Item1 > parentOffset && enumerator.MoveNext())
                         {
                             candidate = enumerator.Current;
                         }
 
-                        child = new ChaserQueryNodeOffset(candidate, (parentOffset - candidate.QueryCommulativeProbability) / candidate.QueryProbability);
+                        return new ChaserQueryNodeOffset(candidate, (parentOffset - candidate.QueryCoords.Item1) / (candidate.QueryCoords.Item2 - candidate.QueryCoords.Item1));
                     }
                 }
             }
 
-            return child;
+            return parent;
         }
 
         public ChaserQueryNodeOffset MapToParent(ChaserQueryNodeOffset child)
@@ -62,7 +59,7 @@ namespace EyeChaser.Queries
             var childNode = child.Node;
 
             var parentNode = childNode.Parent;
-            var parentOffset = childNode.QueryCommulativeProbability + childNode.QueryProbability * childNode.QueryProbability;
+            var parentOffset = childNode.QueryCoords.Item1 + (childNode.QueryCoords.Item2 - childNode.QueryCoords.Item1) * child.Offset;
 
             var parent = new ChaserQueryNodeOffset(parentNode, parentOffset);
 
@@ -74,12 +71,12 @@ namespace EyeChaser.Queries
             throw new NotImplementedException();
         }
 
-        public void Requery(IChaserQueryNode middle, double offset, double bounding)
+        public void Requery(IChaserQueryNode<Range1D> middle, double offset, double bounding)
         {
             throw new NotImplementedException();
         }
 
-        public void Requery(IChaserQueryNode lowerLimit, double lowerOffset, IChaserQueryNode upperLimit, double upperOffset)
+        public void Requery(IChaserQueryNode<Range1D> lowerLimit, double lowerOffset, IChaserQueryNode<Range1D> upperLimit, double upperOffset)
         {
             throw new NotImplementedException();
         }

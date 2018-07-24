@@ -141,6 +141,10 @@
       <Project>{4d4411ec-e380-4589-a647-1260b8175d0f}</Project>
       <Name>EyeChaser.Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EyeChaser.Queries\EyeChaser.Queries.csproj">
+      <Project>{3f4afbae-4332-42dc-b8cd-a76420bd14dc}</Project>
+      <Name>EyeChaser.Queries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EyeChaser.StaticModel\EyeChaser.StaticModel.csproj">
       <Project>{0d352e70-3413-42fb-8ff6-0c20beb5d51d}</Project>
       <Name>EyeChaser.StaticModel</Name>

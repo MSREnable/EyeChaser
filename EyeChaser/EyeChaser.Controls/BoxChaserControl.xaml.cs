@@ -1,4 +1,5 @@
 ﻿using EyeChaser.Api;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -6,6 +7,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace EyeChaser.Controls
 {
+    using Range1D = Tuple<double, double>;
     public sealed partial class BoxChildrenControl : UserControl
     {
         public readonly DependencyProperty ParentNodeProperty = DependencyProperty.Register(nameof(ParentNode), typeof(IChaserNode), typeof(BoxChildrenControl),
@@ -22,9 +24,9 @@ namespace EyeChaser.Controls
             this.InitializeComponent();
         }
 
-        public IChaserNode ParentNode
+        public IChaserQueryNode<Range1D> ParentNode
         {
-            get { return (IChaserNode)GetValue(ParentNodeProperty); }
+            get { return (IChaserQueryNode<Range1D>)GetValue(ParentNodeProperty); }
             set { SetValue(ParentNodeProperty, value); }
         }
 
@@ -59,9 +61,12 @@ namespace EyeChaser.Controls
 
                 var row = 0;
                 var skippedProbabilitySum = 0.0;
-                foreach (IChaserNode child in parent)
+                foreach (IChaserQueryNode<Range1D> child in parent.Children)
                 {
-                    if (limit <= child.Probability)
+                    // Choose to display, according to whether there is enough of the node *within the screen bounds*
+                    // (Note that if one edge is offscreen, we could skip over all remaining siblings?)
+                    double onScreenProb = Math.Min(1.0, child.QueryCoords.Item2) - Math.Max(0.0, child.QueryCoords.Item1);
+                    if (onScreenProb >= limit)
                     {
                         if (!HideSpaces && skippedProbabilitySum != 0)
                         {
@@ -70,10 +75,10 @@ namespace EyeChaser.Controls
                             row++;
                         }
 
-                        var rowDefinition = new RowDefinition { Height = new GridLength(child.Probability, GridUnitType.Star) };
+                        var rowDefinition = new RowDefinition { Height = new GridLength(onScreenProb, GridUnitType.Star) };
                         TheGrid.RowDefinitions.Add(rowDefinition);
-
-                        var control = new BoxParentControl { Node = child, ProbabilityLimit = limit / child.Probability };
+                        // Scale by total size including any offscreen portion
+                        var control = new BoxParentControl { Node = child, ProbabilityLimit = limit / (child.QueryCoords.Item2 - child.QueryCoords.Item1) };
                         Grid.SetRow(control, row);
                         TheGrid.Children.Add(control);
                         row++;
@@ -81,7 +86,7 @@ namespace EyeChaser.Controls
                     }
                     else
                     {
-                        skippedProbabilitySum += child.Probability;
+                        skippedProbabilitySum += onScreenProb;
                     }
                 }
 
