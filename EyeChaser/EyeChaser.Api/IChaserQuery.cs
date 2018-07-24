@@ -37,13 +37,13 @@
         /// </summary>
         /// <param name="child">The pair representing the child node position.</param>
         /// <returns>The corresponding node position in the parent.</returns>
-        ChaserQueryNodeOffset MapToParent(ChaserQueryNodeOffset child);
+        ChaserQueryNodeOffset<Coords> MapToParent(ChaserQueryNodeOffset<Coords> child);
 
         /// <summary>
         /// Convert a reference to a parent node to one of its children.
         /// </summary>
         /// <param name="parent">The pair representing the parent node position.</param>
         /// <returns>THe corresponding node position in a child of the parent.</returns>
-        ChaserQueryNodeOffset MapToChild(ChaserQueryNodeOffset parent);
+        ChaserQueryNodeOffset<Coords> MapToChild(ChaserQueryNodeOffset<Coords> parent);
     }
 }

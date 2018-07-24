@@ -17,9 +17,10 @@ namespace EyeChaser.Queries
 
         List<ChaserQueryNode<Coords>> _list = new List<ChaserQueryNode<Coords>>();
 
-        public ChaserQueryNode(IChaserQuery<Coords> query, IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
+        public ChaserQueryNode(IChaserQuery<Coords> query, IChaserQueryNode<Coords> parent, IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
         {
             _query = query;
+            Parent = parent;
             _node = node;
             _packingAlgorithm = packingAlgorithm;
             _coords = coords;
@@ -60,7 +61,7 @@ namespace EyeChaser.Queries
                     new XmlChaserNode { Caption = "wibble", Probability = 0.1 }
                 };
             }
-            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(_query, child, _packingAlgorithm, coords)));
+            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(_query, this, child, _packingAlgorithm, coords)));
 
             return Task.FromResult(true);
         }

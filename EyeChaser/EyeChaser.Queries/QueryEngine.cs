@@ -7,9 +7,9 @@ namespace EyeChaser.Queries
     using Range1D = Tuple<double, double>;
     public abstract class QueryEngine : IChaserQuery<Range1D>
     {
-        ChaserQueryNodeOffset _lowerBound;
+        ChaserQueryNodeOffset<Range1D> _lowerBound;
 
-        ChaserQueryNodeOffset _upperBound;
+        ChaserQueryNodeOffset<Range1D> _upperBound;
 
         public IChaserQueryNode<Range1D> Root { get; private set; }
 
@@ -24,17 +24,24 @@ namespace EyeChaser.Queries
         internal void SetRoot(IChaserQueryNode<Range1D> root)
         {
             Root = root;
-            _lowerBound = new ChaserQueryNodeOffset(Root, 0);
-            _upperBound = new ChaserQueryNodeOffset(Root, 1);
+            _lowerBound = new ChaserQueryNodeOffset<Range1D>(Root, new Range1D(0, 0));
+            _upperBound = new ChaserQueryNodeOffset<Range1D>(Root, new Range1D(1, 1));
         }
 
-        public ChaserQueryNodeOffset MapToChild(ChaserQueryNodeOffset parent)
+        public ChaserQueryNodeOffset<Range1D> MapToChild(ChaserQueryNodeOffset<Range1D> parent)
         {
+            var child = parent;
+
             var parentOffset = parent.Offset;
 
-            if (!(0 <= parentOffset && parentOffset <= 1))
+            if (!(0 <= parentOffset.Item1 && parentOffset.Item2 <= 1))
             {
                 throw new NotImplementedException("Need to walk up and down tree to do this!");
+            }
+
+            if (parentOffset.Item1 != parentOffset.Item2)
+            {
+                throw new NotImplementedException("Don't know how to work for spans");
             }
 
             var parentNode = parent.Node;
@@ -46,27 +53,30 @@ namespace EyeChaser.Queries
                     if (enumerator.MoveNext())
                     {
                         var candidate = enumerator.Current;
-                        while (candidate.QueryCoords.Item1 > parentOffset && enumerator.MoveNext())
+                        while (candidate.QueryCoords.Item1 > parentOffset.Item1 && enumerator.MoveNext())
                         {
                             candidate = enumerator.Current;
                         }
 
-                        return new ChaserQueryNodeOffset(candidate, (parentOffset - candidate.QueryCoords.Item1) / (candidate.QueryCoords.Item2 - candidate.QueryCoords.Item1));
+                        child = new ChaserQueryNodeOffset<Range1D>(candidate,
+                            new Range1D((parentOffset.Item1 - candidate.QueryCoords.Item1) / (candidate.QueryCoords.Item2 - candidate.QueryCoords.Item1),
+                            (parentOffset.Item1 - candidate.QueryCoords.Item2) / (candidate.QueryCoords.Item2 - candidate.QueryCoords.Item1)));
                     }
                 }
             }
 
-            return parent;
+            return child;
         }
 
-        public ChaserQueryNodeOffset MapToParent(ChaserQueryNodeOffset child)
+        public ChaserQueryNodeOffset<Range1D> MapToParent(ChaserQueryNodeOffset<Range1D> child)
         {
             var childNode = child.Node;
 
             var parentNode = childNode.Parent;
-            var parentOffset = childNode.QueryCoords.Item1 + (childNode.QueryCoords.Item2 - childNode.QueryCoords.Item1) * child.Offset;
+            var parentOffset = new Range1D(childNode.QueryCoords.Item1 + child.Offset.Item1 * (childNode.QueryCoords.Item2 - childNode.QueryCoords.Item1),
+                childNode.QueryCoords.Item1 + child.Offset.Item2 * (childNode.QueryCoords.Item2 - childNode.QueryCoords.Item1));
 
-            var parent = new ChaserQueryNodeOffset(parentNode, parentOffset);
+            var parent = new ChaserQueryNodeOffset<Range1D>(parentNode, parentOffset);
 
             return parent;
         }
@@ -79,6 +89,13 @@ namespace EyeChaser.Queries
         public void NavigateTo(IChaserQueryNode<Range1D> node, Range1D coords)
         {
             Debug.WriteLine($"Touched {node.Caption} at {coords}");
+
+            var walker = new ChaserQueryNodeOffset<Range1D>(node, coords);
+            while (walker.Node.Parent != null)
+            {
+                walker = MapToParent(walker);
+                Debug.WriteLine($"  which is {walker.Node.Caption} at {walker.Offset}");
+            }
         }
     }
 }
