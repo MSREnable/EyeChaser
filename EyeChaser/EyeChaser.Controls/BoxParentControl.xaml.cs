@@ -8,7 +8,7 @@ namespace EyeChaser.Controls
 {
     public sealed partial class BoxParentControl : UserControl
     {
-        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserNode), typeof(BoxParentControl),
+        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserQueryNode), typeof(BoxParentControl),
             new PropertyMetadata(null));
 
         public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxParentControl),
@@ -22,9 +22,9 @@ namespace EyeChaser.Controls
             this.InitializeComponent();
         }
 
-        public IChaserNode Node
+        public IChaserQueryNode Node
         {
-            get { return (IChaserNode)GetValue(NodeProperty); }
+            get { return (IChaserQueryNode)GetValue(NodeProperty); }
             set { SetValue(NodeProperty, value); }
         }
 

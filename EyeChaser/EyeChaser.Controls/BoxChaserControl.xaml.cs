@@ -1,4 +1,5 @@
 ﻿using EyeChaser.Api;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -8,7 +9,7 @@ namespace EyeChaser.Controls
 {
     public sealed partial class BoxChildrenControl : UserControl
     {
-        public readonly DependencyProperty ParentNodeProperty = DependencyProperty.Register(nameof(ParentNode), typeof(IChaserNode), typeof(BoxChildrenControl),
+        public readonly DependencyProperty ParentNodeProperty = DependencyProperty.Register(nameof(ParentNode), typeof(IChaserQueryNode), typeof(BoxChildrenControl),
             new PropertyMetadata(null, ParentNodeChanged));
 
         public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxChildrenControl),
@@ -21,12 +22,12 @@ namespace EyeChaser.Controls
         {
             this.InitializeComponent();
 
-            SizeChanged += (s, e) => DrawChildren();
+            SizeChanged += (s, e) => { var t = DrawChildrenAsync(); };
         }
 
-        public IChaserNode ParentNode
+        public IChaserQueryNode ParentNode
         {
-            get { return (IChaserNode)GetValue(ParentNodeProperty); }
+            get { return (IChaserQueryNode)GetValue(ParentNodeProperty); }
             set { SetValue(ParentNodeProperty, value); }
         }
 
@@ -45,10 +46,10 @@ namespace EyeChaser.Controls
         static void ParentNodeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (BoxChildrenControl)d;
-            control.DrawChildren();
+            var t = control.DrawChildrenAsync();
         }
 
-        void DrawChildren()
+        async Task DrawChildrenAsync()
         {
             TheCanvas.Children.Clear();
 
@@ -60,24 +61,26 @@ namespace EyeChaser.Controls
             {
                 var limit = ProbabilityLimit;
 
-                var cumulativeProbability = 0.0;
-                foreach (IChaserNode child in parent)
+                if (parent.IsUpdateNeeded)
                 {
-                    if (limit <= child.Probability)
+                    await parent.UpdateAsync();
+                }
+
+                foreach (IChaserQueryNode child in parent.QueryChildren)
+                {
+                    if (limit <= child.QueryProbability)
                     {
                         var control = new BoxParentControl
                         {
                             Node = child,
-                            ProbabilityLimit = limit / child.Probability,
-                            Height = height * child.Probability
+                            ProbabilityLimit = limit / child.QueryProbability,
+                            Height = height * child.QueryProbability
                         };
 
-                        Canvas.SetTop(control, height * cumulativeProbability);
+                        Canvas.SetTop(control, height * child.QueryCommulativeProbability);
 
                         TheCanvas.Children.Add(control);
                     }
-
-                    cumulativeProbability += child.Probability;
                 }
             }
         }
