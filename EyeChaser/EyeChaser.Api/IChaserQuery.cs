@@ -26,21 +26,11 @@
         void RemoveRoot();
 
         /// <summary>
-        /// Rejig the tree to reflect a new query,
+        /// Requery to the specificied node.
         /// </summary>
-        /// <param name="middle">The node at the center point of the query.</param>
-        /// <param name="offset">The offset within the node of the center point.</param>
-        /// <param name="bounding">THe offset plus and minus from the center point to include in the query results.</param>
-        void Requery(IChaserQueryNode<Coords> middle, double offset, double bounding);
-
-        /// <summary>
-        /// Rejig the tree to reflect a new query.
-        /// </summary>
-        /// <param name="lowerLimit">The node at the lower limit of the query.</param>
-        /// <param name="lowerOffset">The offset within the lower limit to represent the lower limit of the tree.</param>
-        /// <param name="upperLimit">The node at the upper limit of the query.</param>
-        /// <param name="upperOffset">The offset within the upper limit to represent the uppwer limit of the tree.</param>
-        void Requery(IChaserQueryNode<Coords> lowerLimit, double lowerOffset, IChaserQueryNode<Coords> upperLimit, double upperOffset);
+        /// <param name="node"></param>
+        /// <param name="coords"></param>
+        void NavigateTo(IChaserQueryNode<Coords> node, Coords coords);
 
         /// <summary>
         /// Convert a reference to a child node to one in its parent.

@@ -1,5 +1,6 @@
 ﻿using EyeChaser.Api;
 using System;
+using System.Diagnostics;
 
 namespace EyeChaser.Queries
 {
@@ -16,7 +17,11 @@ namespace EyeChaser.Queries
 
         public double MinimumCumulatativeProbabilityTotal { get; set; } = 0.95;
 
-        internal QueryEngine(ChaserQueryNode<Range1D> root)
+        internal QueryEngine()
+        {
+        }
+
+        internal void SetRoot(IChaserQueryNode<Range1D> root)
         {
             Root = root;
             _lowerBound = new ChaserQueryNodeOffset(Root, 0);
@@ -71,14 +76,9 @@ namespace EyeChaser.Queries
             throw new NotImplementedException();
         }
 
-        public void Requery(IChaserQueryNode<Range1D> middle, double offset, double bounding)
+        public void NavigateTo(IChaserQueryNode<Range1D> node, Range1D coords)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Requery(IChaserQueryNode<Range1D> lowerLimit, double lowerOffset, IChaserQueryNode<Range1D> upperLimit, double upperOffset)
-        {
-            throw new NotImplementedException();
+            Debug.WriteLine($"Touched {node.Caption} at {coords}");
         }
     }
 }

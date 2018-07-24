@@ -1,23 +1,25 @@
 ﻿using EyeChaser.Api;
 using EyeChaser.StaticModel;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EyeChaser.Queries
 {
     // This is now a fairly plan DTO (except UpdateAsync - could move that into the packing algorithm class?), could maybe fold into IChasterQueryNode?
     internal class ChaserQueryNode<Coords> : IChaserQueryNode<Coords>
     {
+        readonly IChaserQuery<Coords> _query;
         readonly IChaserNode _node;
         Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> _packingAlgorithm;
         Coords _coords;
 
         List<ChaserQueryNode<Coords>> _list = new List<ChaserQueryNode<Coords>>();
 
-        public ChaserQueryNode(IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
+        public ChaserQueryNode(IChaserQuery<Coords> query, IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
         {
+            _query = query;
             _node = node;
             _packingAlgorithm = packingAlgorithm;
             _coords = coords;
@@ -38,6 +40,11 @@ namespace EyeChaser.Queries
 
         public IReadOnlyList<IChaserQueryNode<Coords>> QueryChildren => throw new System.NotImplementedException();
 
+        public void NavigateTo(Coords coords)
+        {
+            _query.NavigateTo(this, coords);
+        }
+
         public bool IsUpdateNeeded { get; private set; }
 
         public Task UpdateAsync()
@@ -53,7 +60,7 @@ namespace EyeChaser.Queries
                     new XmlChaserNode { Caption = "wibble", Probability = 0.1 }
                 };
             }
-            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(child, _packingAlgorithm, coords)));
+            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(_query, child, _packingAlgorithm, coords)));
 
             return Task.FromResult(true);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EyeChaser.Api
@@ -33,7 +32,13 @@ namespace EyeChaser.Api
         /// The probability of node within the query results.
         /// </summary>
         Coords QueryCoords { get; }
-    
+
+        /// <summary>
+        /// Navigate through tree.
+        /// </summary>
+        /// <param name="coords">Center positional offset for new tree trunk.</param>
+        void NavigateTo(Coords coords);
+
         /// <summary>
         /// Is the node's children ready for iteration.
         /// </summary>

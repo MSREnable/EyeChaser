@@ -1,6 +1,5 @@
 ﻿using EyeChaser.Api;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -59,7 +58,8 @@ namespace EyeChaser.Controls
             var position = e.GetCurrentPoint(this).Position;
             if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
             {
-                Debug.WriteLine($"Touched {ParentNode.Caption} at {position.Y / ActualHeight}");
+                var offset = position.Y / ActualHeight;
+                ParentNode.NavigateTo(new Range1D(offset, offset));
 
                 e.Handled = true;
             }
