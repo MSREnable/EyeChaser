@@ -13,7 +13,7 @@ namespace EyeChaser.Queries
         readonly IChaserNode _node;
         Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> _packingAlgorithm;
         Coords _coords;
-        
+
         List<ChaserQueryNode<Coords>> _list = new List<ChaserQueryNode<Coords>>();
 
         public ChaserQueryNode(IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
@@ -35,41 +35,27 @@ namespace EyeChaser.Queries
         public Coords QueryCoords => _coords;
 
         public IReadOnlyList<IChaserQueryNode<Coords>> Children { get => _list; }
-        
+
         public IReadOnlyList<IChaserQueryNode<Coords>> QueryChildren => throw new System.NotImplementedException();
 
         public bool IsUpdateNeeded { get; private set; }
 
-        public async Task UpdateAsync()
+        public Task UpdateAsync()
         {
-            await Task.Run(() =>
+            _list.Clear();
+            IReadOnlyList<IChaserNode> children = _node.Cast<IChaserNode>().ToList();
+            if (children.Count == 0)
             {
-                _list.Clear();
-                IReadOnlyList<IChaserNode> children = _node.Cast<IChaserNode>().ToList();
-                /*if (children.Count == 0)
+                children = new[]
                 {
-                    children = new IChaserNode[] { new XmlChaserNode {
-                        Caption = "blah",
-                        Probability = 1
-                    }};
-                }*/
-                _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(child, _packingAlgorithm, coords)));
+                    new XmlChaserNode { Caption = "aardvark", Probability = 0.1 },
+                    new XmlChaserNode { Caption = "blah", Probability = 0.8 },
+                    new XmlChaserNode { Caption = "wibble", Probability = 0.1 }
+                };
+            }
+            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(child, _packingAlgorithm, coords)));
 
-                if (_list.Count == 0)
-                {
-                    // Here we copy coords from parent, which might not be appropriate
-                    // Other options: don't populate (no children) - signals to UI, don't allow further movement within this node.
-                    // Add method to packing algorithm to get default coords.
-                    // Pass single child to packing algorithm (as in comment above).
-                    var blahNode = new XmlChaserNode
-                    {
-                        Caption = "blah",
-                        Probability = 1
-                    };
-
-                    _list.Add(new ChaserQueryNode<Coords>(blahNode, _packingAlgorithm, _coords));
-                }
-            });
-        }   
+            return Task.FromResult(true);
+        }
     }
 }
