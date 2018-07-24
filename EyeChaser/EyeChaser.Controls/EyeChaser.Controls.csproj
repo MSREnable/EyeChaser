@@ -106,7 +106,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BoxChaserControl.xaml.cs">
+    <Compile Include="BoxChildrenControl.xaml.cs">
       <DependentUpon>BoxChildrenControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="BoxParentControl.xaml.cs">
