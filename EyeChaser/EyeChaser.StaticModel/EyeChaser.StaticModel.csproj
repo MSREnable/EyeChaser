@@ -44,6 +44,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rect2D.cs" />
+    <Compile Include="XmlTileNode.cs" />
     <Compile Include="XmlChaserNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
