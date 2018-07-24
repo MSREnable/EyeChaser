@@ -20,6 +20,8 @@ namespace EyeChaser.Controls
         public BoxChildrenControl()
         {
             this.InitializeComponent();
+
+            SizeChanged += (s, e) => DrawChildren();
         }
 
         public IChaserNode ParentNode
@@ -48,48 +50,34 @@ namespace EyeChaser.Controls
 
         void DrawChildren()
         {
-            TheGrid.RowDefinitions.Clear();
-            TheGrid.Children.Clear();
+            TheCanvas.Children.Clear();
 
             var parent = ParentNode;
 
-            if (parent != null)
+            var height = ActualHeight;
+
+            if (parent != null && !double.IsNaN(height))
             {
                 var limit = ProbabilityLimit;
 
-                var row = 0;
-                var skippedProbabilitySum = 0.0;
+                var cumulativeProbability = 0.0;
                 foreach (IChaserNode child in parent)
                 {
                     if (limit <= child.Probability)
                     {
-                        if (!HideSpaces && skippedProbabilitySum != 0)
+                        var control = new BoxParentControl
                         {
-                            var rowDefinitionExtra = new RowDefinition { Height = new GridLength(skippedProbabilitySum, GridUnitType.Star) };
-                            TheGrid.RowDefinitions.Add(rowDefinitionExtra);
-                            row++;
-                        }
+                            Node = child,
+                            ProbabilityLimit = limit / child.Probability,
+                            Height = height * child.Probability
+                        };
 
-                        var rowDefinition = new RowDefinition { Height = new GridLength(child.Probability, GridUnitType.Star) };
-                        TheGrid.RowDefinitions.Add(rowDefinition);
+                        Canvas.SetTop(control, height * cumulativeProbability);
 
-                        var control = new BoxParentControl { Node = child, ProbabilityLimit = limit / child.Probability };
-                        Grid.SetRow(control, row);
-                        TheGrid.Children.Add(control);
-                        row++;
-                        skippedProbabilitySum = 0.0;
+                        TheCanvas.Children.Add(control);
                     }
-                    else
-                    {
-                        skippedProbabilitySum += child.Probability;
-                    }
-                }
 
-                if (!HideSpaces && skippedProbabilitySum != 0)
-                {
-                    var rowDefinitionExtra = new RowDefinition { Height = new GridLength(skippedProbabilitySum, GridUnitType.Star) };
-                    TheGrid.RowDefinitions.Add(rowDefinitionExtra);
-                    row++;
+                    cumulativeProbability += child.Probability;
                 }
             }
         }

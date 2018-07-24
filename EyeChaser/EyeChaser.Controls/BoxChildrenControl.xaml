@@ -9,6 +9,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid x:Name="TheGrid">
-    </Grid>
+    <Canvas x:Name="TheCanvas"/>
+
 </UserControl>
