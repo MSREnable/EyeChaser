@@ -30,8 +30,6 @@ namespace EyeChaser.Queries
 
         public string Caption => _node.Caption;
 
-        public string SortKey => _node.SortKey;
-
         public Coords QueryCoords => _coords;
 
         public IReadOnlyList<IChaserQueryNode<Coords>> Children { get => _list; }

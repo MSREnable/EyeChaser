@@ -18,8 +18,6 @@ namespace EyeChaser.StaticModel
 
         public string Caption { get; set; }
 
-        public string SortKey => Caption;
-
         public double Probability { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged

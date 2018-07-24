@@ -17,11 +17,6 @@ namespace EyeChaser.Api
         string Caption { get; }
 
         /// <summary>
-        /// Key, unique among peers, that can be used to order node.
-        /// </summary>
-        string SortKey { get; }
-
-        /// <summary>
         /// Probability among peers of node.
         /// </summary>
         double Probability { get; }
