@@ -100,25 +100,25 @@ namespace EyeChaser.Queries
 
             var oldRootCoords = walker.Node.QueryCoords;
 
-            var maxMoveAmount = 0.05 * (oldRootCoords.UpperBound - oldRootCoords.LowerBound);
+            // First expand about the point that was clicked, so that point stays under the mouse
             var expandFactor = 1.2;
 
-            var navigateCenter = walker.Offset.LowerBound * (oldRootCoords.UpperBound - oldRootCoords.LowerBound);
+            var navigateCenter = walker.Offset.LowerBound * (oldRootCoords.UpperBound - oldRootCoords.LowerBound) + oldRootCoords.LowerBound;
 
-            var moveAmount = Math.Min(maxMoveAmount, Math.Max(-maxMoveAmount, 0.5 - oldRootCoords.LowerBound - navigateCenter));
+            var expandedRootCoords = new Range1D((oldRootCoords.LowerBound - navigateCenter) * expandFactor + navigateCenter,
+                (oldRootCoords.UpperBound - navigateCenter) * expandFactor + navigateCenter);
 
-            var movedRootCoords = new Range1D(oldRootCoords.LowerBound + moveAmount, oldRootCoords.UpperBound + moveAmount);
+            // Now move a bit towards the middle...not clear we necessarily want this but maybe?
+            var maxMoveAmount = 0.05; // Proportion of screen size 
+            var moveAmount = Math.Min(maxMoveAmount, Math.Max(-maxMoveAmount, 0.5 - navigateCenter));
 
-            var movedNavigationCenter = navigateCenter + moveAmount;
-
-            var expandedRootCoords = new Range1D(movedNavigationCenter - expandFactor * (movedNavigationCenter - movedRootCoords.LowerBound),
-                movedNavigationCenter + expandFactor * (movedRootCoords.UpperBound - movedNavigationCenter));
+            var movedRootCoords = new Range1D(expandedRootCoords.LowerBound + moveAmount, expandedRootCoords.UpperBound + moveAmount);
 
             Debug.WriteLine($"Clicked at {navigateCenter} within {oldRootCoords.LowerBound}..{oldRootCoords.UpperBound}");
-            Debug.WriteLine($"  moved by {moveAmount} to {movedRootCoords.LowerBound}..{movedRootCoords.UpperBound}");
             Debug.WriteLine($"  expanded to {expandedRootCoords.LowerBound}..{expandedRootCoords.UpperBound}");
+            Debug.WriteLine($"  moved by {moveAmount} to {movedRootCoords.LowerBound}..{movedRootCoords.UpperBound}");
 
-            walker.Node.SetUpdate(expandedRootCoords);
+            walker.Node.SetUpdate(movedRootCoords);
         }
     }
 }
