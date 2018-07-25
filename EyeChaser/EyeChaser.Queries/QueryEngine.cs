@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 namespace EyeChaser.Queries
 {
-    using Range1D = Tuple<double, double>;
     public abstract class QueryEngine : IChaserQuery<Range1D>
     {
         ChaserQueryNodeOffset<Range1D> _lowerBound;

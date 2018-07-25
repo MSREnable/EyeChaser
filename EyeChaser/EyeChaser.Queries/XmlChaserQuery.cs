@@ -1,6 +1,5 @@
 ﻿using EyeChaser.StaticModel;
 using EyeChaser.Transforms;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ using System.Xml;
 
 namespace EyeChaser.Queries
 {
-    using Range1D = Tuple<double, double>;
     public class XmlChaserQueryEngine : QueryEngine
     {
         XmlChaserQueryEngine()
@@ -20,7 +18,7 @@ namespace EyeChaser.Queries
             var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
             var sortedRoot = new AlphabeticChaserNode(xmlRoot, minProbThreshold);
             var engine = new XmlChaserQueryEngine();
-            var root = new ChaserQueryNode<Range1D>(engine, null, sortedRoot, Renormalize, Tuple.Create(0.0, 1.0));
+            var root = new ChaserQueryNode<Range1D>(engine, null, sortedRoot, Renormalize, new Range1D(0.0, 1.0));
             engine.SetRoot(root);
             return engine;
         }
@@ -33,7 +31,7 @@ namespace EyeChaser.Queries
             for (int i = 0; i < nodes.Count; i++)
             {
                 double next = (i == nodes.Count - 1) ? 1.0 : cumu + (nodes[i].Probability / total);
-                res[i] = Tuple.Create(cumu, next);
+                res[i] = new Range1D(cumu, next);
                 cumu = next;
             }
             return res;

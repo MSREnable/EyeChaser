@@ -51,6 +51,7 @@
     <Compile Include="ChaserQueryNode.cs" />
     <Compile Include="QueryEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range1D.cs" />
     <Compile Include="XmlChaserQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

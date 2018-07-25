@@ -1,5 +1,5 @@
 ﻿using EyeChaser.Api;
-using System;
+using EyeChaser.Queries;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -8,8 +8,6 @@ using Windows.UI.Xaml.Input;
 
 namespace EyeChaser.Controls
 {
-    using Range1D = Tuple<double, double>;
-
     public sealed partial class BoxParentControl : UserControl
     {
         public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserQueryNode<Range1D>), typeof(BoxParentControl),

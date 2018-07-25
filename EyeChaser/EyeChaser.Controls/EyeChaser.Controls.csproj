@@ -142,6 +142,10 @@
       <Project>{3fa06303-8e51-4cbb-8d16-9623bdb9df5e}</Project>
       <Name>EyeChaser.Api</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EyeChaser.Queries\EyeChaser.Queries.csproj">
+      <Project>{3F4AFBAE-4332-42DC-B8CD-A76420BD14DC}</Project>
+      <Name>EyeChaser.Queries</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
