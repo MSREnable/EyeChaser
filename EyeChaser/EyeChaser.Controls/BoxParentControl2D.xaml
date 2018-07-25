@@ -43,7 +43,7 @@
                         <RotateTransform Angle="270" />
                     </TextBlock.RenderTransform>
                 </TextBlock>-->
-
+                
                 <!--</Viewbox>-->
                 <local:BoxChildrenControl2D Grid.Column="1" Grid.Row="1" ProbabilityLimit="{x:Bind ProbabilityLimit}" ParentNode="{x:Bind Node, Mode=OneWay}" HideSpaces="{x:Bind HideSpaces, Mode=OneWay}"/>
             </Grid>

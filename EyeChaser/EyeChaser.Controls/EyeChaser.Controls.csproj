@@ -112,6 +112,9 @@
     <Compile Include="BoxChaserControl.xaml.cs">
       <DependentUpon>BoxChildrenControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BoxTileControl.xaml.cs">
+      <DependentUpon>BoxTileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BoxParentControl2D.xaml.cs">
       <DependentUpon>BoxParentControl2D.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,10 @@
     <Page Include="BoxChildrenControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BoxTileControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="BoxParentControl2D.xaml">
       <Generator>MSBuild:Compile</Generator>

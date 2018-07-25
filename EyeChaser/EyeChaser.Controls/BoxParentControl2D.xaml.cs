@@ -9,13 +9,13 @@ namespace EyeChaser.Controls
 {
     public sealed partial class BoxParentControl2D : UserControl
     {
-        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserQueryNode<Rect2D>), typeof(BoxParentControl),
+        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(IChaserQueryNode<Rect2D>), typeof(BoxParentControl2D),
             new PropertyMetadata(null));
 
-        public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxParentControl),
+        public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxParentControl2D),
             new PropertyMetadata(0.01));
 
-        public readonly DependencyProperty HideSpacesProperty = DependencyProperty.Register(nameof(HideSpaces), typeof(bool), typeof(BoxChildrenControl),
+        public readonly DependencyProperty HideSpacesProperty = DependencyProperty.Register(nameof(HideSpaces), typeof(bool), typeof(BoxChildrenControl2D),
             new PropertyMetadata(false));
 
         public BoxParentControl2D()
