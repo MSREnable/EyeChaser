@@ -33,12 +33,12 @@ namespace EyeChaser.Queries
 
             var parentOffset = parent.Offset;
 
-            if (!(0 <= parentOffset.Item1 && parentOffset.Item2 <= 1))
+            if (!(0 <= parentOffset.LowerBound && parentOffset.UpperBound <= 1))
             {
                 throw new NotImplementedException("Need to walk up and down tree to do this!");
             }
 
-            if (parentOffset.Item1 != parentOffset.Item2)
+            if (parentOffset.LowerBound != parentOffset.UpperBound)
             {
                 throw new NotImplementedException("Don't know how to work for spans");
             }
@@ -52,14 +52,14 @@ namespace EyeChaser.Queries
                     if (enumerator.MoveNext())
                     {
                         var candidate = enumerator.Current;
-                        while (candidate.QueryCoords.Item1 > parentOffset.Item1 && enumerator.MoveNext())
+                        while (candidate.QueryCoords.LowerBound > parentOffset.LowerBound && enumerator.MoveNext())
                         {
                             candidate = enumerator.Current;
                         }
 
                         child = new ChaserQueryNodeOffset<Range1D>(candidate,
-                            new Range1D((parentOffset.Item1 - candidate.QueryCoords.Item1) / (candidate.QueryCoords.Item2 - candidate.QueryCoords.Item1),
-                            (parentOffset.Item1 - candidate.QueryCoords.Item2) / (candidate.QueryCoords.Item2 - candidate.QueryCoords.Item1)));
+                            new Range1D((parentOffset.LowerBound - candidate.QueryCoords.LowerBound) / (candidate.QueryCoords.UpperBound - candidate.QueryCoords.LowerBound),
+                            (parentOffset.LowerBound - candidate.QueryCoords.UpperBound) / (candidate.QueryCoords.UpperBound - candidate.QueryCoords.LowerBound)));
                     }
                 }
             }
@@ -72,8 +72,8 @@ namespace EyeChaser.Queries
             var childNode = child.Node;
 
             var parentNode = childNode.Parent;
-            var parentOffset = new Range1D(childNode.QueryCoords.Item1 + child.Offset.Item1 * (childNode.QueryCoords.Item2 - childNode.QueryCoords.Item1),
-                childNode.QueryCoords.Item1 + child.Offset.Item2 * (childNode.QueryCoords.Item2 - childNode.QueryCoords.Item1));
+            var parentOffset = new Range1D(childNode.QueryCoords.LowerBound + child.Offset.LowerBound * (childNode.QueryCoords.UpperBound - childNode.QueryCoords.LowerBound),
+                childNode.QueryCoords.LowerBound + child.Offset.UpperBound * (childNode.QueryCoords.UpperBound - childNode.QueryCoords.LowerBound));
 
             var parent = new ChaserQueryNodeOffset<Range1D>(parentNode, parentOffset);
 
@@ -87,7 +87,7 @@ namespace EyeChaser.Queries
 
         public void NavigateTo(IChaserQueryNode<Range1D> node, Range1D coords)
         {
-            Debug.Assert(coords.Item1 == coords.Item2);
+            Debug.Assert(coords.LowerBound == coords.UpperBound);
 
             Debug.WriteLine($"Touched {node.Caption} at {coords}");
 
@@ -100,23 +100,23 @@ namespace EyeChaser.Queries
 
             var oldRootCoords = walker.Node.QueryCoords;
 
-            var maxMoveAmount = 0.05 * (oldRootCoords.Item2 - oldRootCoords.Item1);
+            var maxMoveAmount = 0.05 * (oldRootCoords.UpperBound - oldRootCoords.LowerBound);
             var expandFactor = 1.2;
 
-            var navigateCenter = walker.Offset.Item1 * (oldRootCoords.Item2 - oldRootCoords.Item1);
+            var navigateCenter = walker.Offset.LowerBound * (oldRootCoords.UpperBound - oldRootCoords.LowerBound);
 
-            var moveAmount = Math.Min(maxMoveAmount, Math.Max(-maxMoveAmount, 0.5 - oldRootCoords.Item1 - navigateCenter));
+            var moveAmount = Math.Min(maxMoveAmount, Math.Max(-maxMoveAmount, 0.5 - oldRootCoords.LowerBound - navigateCenter));
 
-            var movedRootCoords = new Range1D(oldRootCoords.Item1 + moveAmount, oldRootCoords.Item2 + moveAmount);
+            var movedRootCoords = new Range1D(oldRootCoords.LowerBound + moveAmount, oldRootCoords.UpperBound + moveAmount);
 
             var movedNavigationCenter = navigateCenter + moveAmount;
 
-            var expandedRootCoords = new Range1D(movedNavigationCenter - expandFactor * (movedNavigationCenter - movedRootCoords.Item1),
-                movedNavigationCenter + expandFactor * (movedRootCoords.Item2 - movedNavigationCenter));
+            var expandedRootCoords = new Range1D(movedNavigationCenter - expandFactor * (movedNavigationCenter - movedRootCoords.LowerBound),
+                movedNavigationCenter + expandFactor * (movedRootCoords.UpperBound - movedNavigationCenter));
 
-            Debug.WriteLine($"Clicked at {navigateCenter} within {oldRootCoords.Item1}..{oldRootCoords.Item2}");
-            Debug.WriteLine($"  moved by {moveAmount} to {movedRootCoords.Item1}..{movedRootCoords.Item2}");
-            Debug.WriteLine($"  expanded to {expandedRootCoords.Item1}..{expandedRootCoords.Item2}");
+            Debug.WriteLine($"Clicked at {navigateCenter} within {oldRootCoords.LowerBound}..{oldRootCoords.UpperBound}");
+            Debug.WriteLine($"  moved by {moveAmount} to {movedRootCoords.LowerBound}..{movedRootCoords.UpperBound}");
+            Debug.WriteLine($"  expanded to {expandedRootCoords.LowerBound}..{expandedRootCoords.UpperBound}");
 
             walker.Node.SetUpdate(expandedRootCoords);
         }

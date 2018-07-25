@@ -4,12 +4,12 @@
     {
         public Range1D(double lowerBound, double upperBound)
         {
-            Item1 = lowerBound;
-            Item2 = upperBound;
+            LowerBound = lowerBound;
+            UpperBound = upperBound;
         }
 
-        public double Item1 { get; set; }
+        public double LowerBound { get; }
 
-        public double Item2 { get; set; }
+        public double UpperBound { get; }
     }
 }

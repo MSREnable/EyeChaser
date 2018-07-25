@@ -101,7 +101,7 @@ namespace EyeChaser.Controls
 
             var parent = ParentNode;
             var parentSpan = parent.QueryCoords;
-            var parentSize = parentSpan.Item2 - parentSpan.Item1;
+            var parentSize = parentSpan.UpperBound - parentSpan.LowerBound;
 
             var height = ActualHeight;
 
@@ -118,11 +118,11 @@ namespace EyeChaser.Controls
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
                     // (Note that if one edge is offscreen, we could skip over all remaining siblings?)
-                    double onScreenProb = parentSize * Math.Min(1.0, child.QueryCoords.Item2) - Math.Max(0.0, child.QueryCoords.Item1);
+                    double onScreenProb = parentSize * Math.Min(1.0, child.QueryCoords.UpperBound) - Math.Max(0.0, child.QueryCoords.LowerBound);
                     if (onScreenProb >= limit)
                     {
-                        var startPosition = parentSpan.Item1 + parentSize * child.QueryCoords.Item1;
-                        var endPosition = parentSpan.Item1 + parentSize * child.QueryCoords.Item2;
+                        var startPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.LowerBound;
+                        var endPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.UpperBound;
 
                         double overallProb = endPosition - startPosition;
                         var control = new BoxParentControl
