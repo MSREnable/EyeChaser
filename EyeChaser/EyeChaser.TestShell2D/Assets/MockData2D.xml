@@ -11,11 +11,11 @@
   </Group>
 
   <Group Caption="Create" Left="0.3" Right="0.65" Top="0.0" Bottom="0.35">
-    <Node Caption="" Uri="https://calendar.google.com/" Left="0.0" Right="0.35" Top="0.5" Bottom="1.0" />
+    <Node Uri="https://onenote.com/" ImageFile="C:\Users\allawr\dasher\EyeChaser\EyeChaser\EyeChaser.TestShell2D\Assets\onenote.png" Left="0.0" Right="0.35" Top="0.5" Bottom="1.0" />
     <Node Caption="" Uri="https://gmail.com/" Left="0.35" Right="1.0" Top="0.5" Bottom="1.0" />
     <Node Caption="" Uri="https://www.youidraw.com/apps/painter/" Left="0.0" Right="0.3" Top="0.0" Bottom="0.5" />
     <Node Caption="" Uri="ms-people:" Left="0.3" Right="0.7" Top="0.0" Bottom="0.5" />
-    <Node Caption="" Uri="https://onenote.com/" Left="0.7" Right="1.0" Top="0.0" Bottom="0.5" />
+    <Node Caption="" Uri="https://evernote.com/" Left="0.7" Right="1.0" Top="0.0" Bottom="0.5" />
   </Group>
 
   <Group Caption="Play" Left="0.65" Right="1.0" Top="0.0" Bottom="0.5">
@@ -27,6 +27,7 @@
   </Group>
   
   <Group Caption="Explore" Left="0.3" Right="0.65" Top="0.35" Bottom="1.0">
+     <Node Caption="" Uri="https://calendar.google.com/" Left="0.0" Right="0.35" Top="0.5" Bottom="1.0" />
      <Node Caption="" Uri="http://skyscanner.net/" Left="0.1" Right="0.9" Top="0.1" Bottom="0.4" />
   </Group>
 </Group>

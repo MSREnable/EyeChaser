@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -75,7 +76,7 @@ namespace EyeChaser.Controls
                     await parent.UpdateAsync();
                 }
 
-                foreach (IChaserQueryNode<Rect2D> child in parent.Children)
+                foreach (XmlTileNode child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
                     double onScreenProb = (Math.Min(1.0, child.QueryCoords.Right) - Math.Max(0.0, child.QueryCoords.Left))
@@ -90,14 +91,23 @@ namespace EyeChaser.Controls
                         FrameworkElement control;
                         if (child.Children.Count == 0)
                         {
-                            int captionHash = child.Caption.GetHashCode();
-                            Windows.UI.Color c = new Windows.UI.Color { A=0xff, R=(byte)captionHash, G=(byte)(captionHash >> 8), B = (byte)(captionHash >> 16) };
+                            Brush b;
+                            if ((child.Caption.Length == 0) && (child.ImageFile.Length != 0))
+                            {
+                                var img = new BitmapImage(new Uri(child.ImageFile, UriKind.RelativeOrAbsolute));
+                                b = new ImageBrush { ImageSource = img };
+                            }
+                            else
+                            {
+                                int captionHash = child.Caption.GetHashCode();
+                                b = new SolidColorBrush(new Windows.UI.Color { A = 0xff, R = (byte)captionHash, G = (byte)(captionHash >> 8), B = (byte)(captionHash >> 16) });
+                            }
                             control = new BoxTileControl
                             {
                                 Node = (XmlTileNode)child,
                                 FontFamily = (child.Caption.Length > 1) ? ScriptFont : SegoeFont,
                                 FontSize = 36 - child.Caption.Length,
-                                TileColor = new SolidColorBrush(c)
+                                TileColor = b
                             };
                         }
                         else

@@ -17,6 +17,8 @@ namespace EyeChaser.StaticModel
 
         public string Uri { get; private set; }
 
+        public string ImageFile { get; private set; }
+
         private readonly List<XmlTileNode> _children = new List<XmlTileNode>();
 
         public IReadOnlyList<IChaserQueryNode<Rect2D>> Children
@@ -34,14 +36,15 @@ namespace EyeChaser.StaticModel
         {
             while (!reader.IsStartElement("Node") && !reader.IsStartElement("Group") && await reader.ReadAsync()) ;
 
-            var caption = reader.GetAttribute(nameof(Caption));
+            var caption = reader.GetAttribute(nameof(Caption)) ?? "";
             var left = double.Parse(reader.GetAttribute(nameof(Rect2D.Left)));
             var right = double.Parse(reader.GetAttribute(nameof(Rect2D.Right)));
             var top = double.Parse(reader.GetAttribute(nameof(Rect2D.Top)));
             var bottom = double.Parse(reader.GetAttribute(nameof(Rect2D.Bottom)));
-            var uri = reader.GetAttribute(nameof(Uri));
+            var uri = reader.GetAttribute(nameof(Uri)) ?? "";
+            var image = reader.GetAttribute(nameof(ImageFile)) ?? "";
 
-            var root = new XmlTileNode { Caption = caption, QueryCoords = new Rect2D(left, right, top, bottom), Uri = uri ?? "" };
+            var root = new XmlTileNode { Caption = caption, QueryCoords = new Rect2D(left, right, top, bottom), Uri = uri, ImageFile = image };
 
             if (reader.IsEmptyElement)
             {

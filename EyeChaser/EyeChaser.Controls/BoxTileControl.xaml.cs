@@ -16,7 +16,7 @@ namespace EyeChaser.Controls
         public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(XmlTileNode), typeof(BoxTileControl),
             new PropertyMetadata(null));
 
-        public readonly DependencyProperty TileColorProperty = DependencyProperty.Register(nameof(TileColor), typeof(SolidColorBrush), typeof(BoxTileControl),
+        public readonly DependencyProperty TileColorProperty = DependencyProperty.Register(nameof(TileColor), typeof(Brush), typeof(BoxTileControl),
             new PropertyMetadata(null));
         
         public BoxTileControl()
@@ -30,9 +30,9 @@ namespace EyeChaser.Controls
             set { SetValue(NodeProperty, value); }
         }
 
-        public SolidColorBrush TileColor
+        public Brush TileColor
         {
-            get { return (SolidColorBrush)GetValue(TileColorProperty); }
+            get { return (Brush)GetValue(TileColorProperty); }
             set { SetValue(TileColorProperty, value); }
         }
 
