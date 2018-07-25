@@ -88,6 +88,8 @@ namespace EyeChaser.Queries
 
         public void NavigateTo(IChaserQueryNode<Range1D> node, Range1D coords)
         {
+            Debug.Assert(coords.Item1 == coords.Item2);
+
             Debug.WriteLine($"Touched {node.Caption} at {coords}");
 
             var walker = new ChaserQueryNodeOffset<Range1D>(node, coords);
@@ -96,6 +98,28 @@ namespace EyeChaser.Queries
                 walker = MapToParent(walker);
                 Debug.WriteLine($"  which is {walker.Node.Caption} at {walker.Offset}");
             }
+
+            var oldRootCoords = walker.Node.QueryCoords;
+
+            var maxMoveAmount = 0.05 * (oldRootCoords.Item2 - oldRootCoords.Item1);
+            var expandFactor = 1.2;
+
+            var navigateCenter = walker.Offset.Item1 * (oldRootCoords.Item2 - oldRootCoords.Item1);
+
+            var moveAmount = Math.Min(maxMoveAmount, Math.Max(-maxMoveAmount, 0.5 - oldRootCoords.Item1 - navigateCenter));
+
+            var movedRootCoords = new Range1D(oldRootCoords.Item1 + moveAmount, oldRootCoords.Item2 + moveAmount);
+
+            var movedNavigationCenter = navigateCenter + moveAmount;
+
+            var expandedRootCoords = new Range1D(movedNavigationCenter - expandFactor * (movedNavigationCenter - movedRootCoords.Item1),
+                movedNavigationCenter + expandFactor * (movedRootCoords.Item2 - movedNavigationCenter));
+
+            Debug.WriteLine($"Clicked at {navigateCenter} within {oldRootCoords.Item1}..{oldRootCoords.Item2}");
+            Debug.WriteLine($"  moved by {moveAmount} to {movedRootCoords.Item1}..{movedRootCoords.Item2}");
+            Debug.WriteLine($"  expanded to {expandedRootCoords.Item1}..{expandedRootCoords.Item2}");
+
+            walker.Node.SetUpdate(expandedRootCoords);
         }
     }
 }

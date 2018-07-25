@@ -2,13 +2,14 @@
 using EyeChaser.StaticModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EyeChaser.Queries
 {
     // This is now a fairly plan DTO (except UpdateAsync - could move that into the packing algorithm class?), could maybe fold into IChasterQueryNode?
-    internal class ChaserQueryNode<Coords> : IChaserQueryNode<Coords>
+    internal class ChaserQueryNode<Coords> : IChaserQueryNode<Coords>, INotifyPropertyChanged
     {
         readonly IChaserQuery<Coords> _query;
         readonly IChaserNode _node;
@@ -27,6 +28,20 @@ namespace EyeChaser.Queries
             IsUpdateNeeded = true;
         }
 
+        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        {
+            add
+            {
+                _propertyChanged += value;
+            }
+
+            remove
+            {
+                _propertyChanged += value;
+            }
+        }
+        PropertyChangedEventHandler _propertyChanged;
+
         public int Generation { get; internal set; }
 
         public IChaserQueryNode<Coords> Parent { get; internal set; }
@@ -39,7 +54,13 @@ namespace EyeChaser.Queries
 
         public IReadOnlyList<IChaserQueryNode<Coords>> Children { get => _list; }
 
-        public IReadOnlyList<IChaserQueryNode<Coords>> QueryChildren => throw new System.NotImplementedException();
+        public void SetUpdate(Coords coords)
+        {
+            IsUpdateNeeded = true;
+            _coords = coords;
+
+            _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Children)));
+        }
 
         public void NavigateTo(Coords coords)
         {

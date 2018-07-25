@@ -40,6 +40,12 @@ namespace EyeChaser.Api
         void NavigateTo(Coords coords);
 
         /// <summary>
+        /// Set the node to update.
+        /// </summary>
+        /// <param name="coords"></param>
+        void SetUpdate(Coords coords);
+
+        /// <summary>
         /// Is the node's children ready for iteration.
         /// </summary>
         bool IsUpdateNeeded { get; }
