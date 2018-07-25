@@ -89,7 +89,7 @@ namespace EyeChaser.Controls
                     double onScreenProb = Math.Min(1.0, child.QueryCoords.UpperBound) - Math.Max(0.0, child.QueryCoords.LowerBound);
                     if (onScreenProb >= limit)
                     {
-                        double overallProb = child.QueryCoords.UpperBound - child.QueryCoords.LowerBound;
+                        double overallProb = child.QueryCoords.BoundSize;
                         var control = new BoxParentControl
                         {
                             Width = ActualWidth,

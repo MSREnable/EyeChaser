@@ -101,7 +101,7 @@ namespace EyeChaser.Controls
 
             var parent = ParentNode;
             var parentSpan = parent.QueryCoords;
-            var parentSize = parentSpan.UpperBound - parentSpan.LowerBound;
+            var parentSize = parentSpan.BoundSize;
 
             var height = ActualHeight;
 

@@ -58,8 +58,8 @@ namespace EyeChaser.Queries
                         }
 
                         child = new ChaserQueryNodeOffset<Range1D>(candidate,
-                            new Range1D((parentOffset.LowerBound - candidate.QueryCoords.LowerBound) / (candidate.QueryCoords.UpperBound - candidate.QueryCoords.LowerBound),
-                            (parentOffset.LowerBound - candidate.QueryCoords.UpperBound) / (candidate.QueryCoords.UpperBound - candidate.QueryCoords.LowerBound)));
+                            new Range1D((parentOffset.LowerBound - candidate.QueryCoords.LowerBound) / (candidate.QueryCoords.BoundSize),
+                            (parentOffset.LowerBound - candidate.QueryCoords.UpperBound) / (candidate.QueryCoords.BoundSize)));
                     }
                 }
             }
@@ -72,8 +72,8 @@ namespace EyeChaser.Queries
             var childNode = child.Node;
 
             var parentNode = childNode.Parent;
-            var parentOffset = new Range1D(childNode.QueryCoords.LowerBound + child.Offset.LowerBound * (childNode.QueryCoords.UpperBound - childNode.QueryCoords.LowerBound),
-                childNode.QueryCoords.LowerBound + child.Offset.UpperBound * (childNode.QueryCoords.UpperBound - childNode.QueryCoords.LowerBound));
+            var parentOffset = new Range1D(childNode.QueryCoords.LowerBound + child.Offset.LowerBound * (childNode.QueryCoords.BoundSize),
+                childNode.QueryCoords.LowerBound + child.Offset.UpperBound * (childNode.QueryCoords.BoundSize));
 
             var parent = new ChaserQueryNodeOffset<Range1D>(parentNode, parentOffset);
 
