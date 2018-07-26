@@ -22,15 +22,16 @@
 
         /// <summary>
         /// Remove the query tree root.
+        /// ALAN should this be some sort of "Make some child of the existing root become the new root" operation? Or ChangeRoot?
         /// </summary>
         void RemoveRoot();
 
         /// <summary>
-        /// Requery to the specificied node.
+        /// Move (nodes starting at the Root) in response to a click at the specified coords.
         /// </summary>
-        /// <param name="node"></param>
-        /// <param name="coords"></param>
-        void NavigateTo(IChaserQueryNode<Coords> node, Coords coords);
+        /// <param name="coords">Click coordinates, expressed in the same coordinate system as the Root.
+        /// For now, we support only the case where coords.LowerBound == coords.UpperBound.</param>
+        void NavigateTo(Coords coords);
 
         /// <summary>
         /// Convert a reference to a child node to one in its parent.

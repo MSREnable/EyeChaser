@@ -34,12 +34,6 @@ namespace EyeChaser.Api
         Coords QueryCoords { get; }
 
         /// <summary>
-        /// Navigate through tree.
-        /// </summary>
-        /// <param name="coords">Center positional offset for new tree trunk.</param>
-        void NavigateTo(Coords coords);
-
-        /// <summary>
         /// Set the node to update.
         /// </summary>
         /// <param name="coords"></param>

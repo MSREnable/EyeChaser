@@ -79,25 +79,18 @@ namespace EyeChaser.Queries
             throw new NotImplementedException();
         }
 
-        public void NavigateTo(IChaserQueryNode<Range1D> node, Range1D coords)
+        public void NavigateTo(Range1D coords)
         {
             Debug.Assert(coords.LowerBound == coords.UpperBound);
 
-            Debug.WriteLine($"Touched {node.Caption} at {coords}");
+            Debug.WriteLine($"Touched at {coords}");
 
-            var walker = new ChaserQueryNodeOffset<Range1D>(node, coords);
-            while (walker.Node.Parent != null)
-            {
-                walker = MapToParent(walker);
-                Debug.WriteLine($"  which is {walker.Node.Caption} at {walker.Offset}");
-            }
-
-            var oldRootCoords = walker.Node.QueryCoords;
+            var oldRootCoords = Root.QueryCoords;
 
             // First expand about the point that was clicked, so that point stays under the mouse
             var expandFactor = 1.2;
 
-            var navigateCenter = walker.Offset.LowerBound * (oldRootCoords.BoundSize) + oldRootCoords.LowerBound;
+            var navigateCenter = coords.LowerBound;
 
             var expandedRootCoords = new Range1D((oldRootCoords.LowerBound - navigateCenter) * expandFactor + navigateCenter,
                 (oldRootCoords.UpperBound - navigateCenter) * expandFactor + navigateCenter);
@@ -112,7 +105,7 @@ namespace EyeChaser.Queries
             Debug.WriteLine($"  expanded to {expandedRootCoords.LowerBound}..{expandedRootCoords.UpperBound}");
             Debug.WriteLine($"  moved by {moveAmount} to {movedRootCoords.LowerBound}..{movedRootCoords.UpperBound}");
 
-            walker.Node.SetUpdate(movedRootCoords);
+            Root.SetUpdate(movedRootCoords);
         }
     }
 }

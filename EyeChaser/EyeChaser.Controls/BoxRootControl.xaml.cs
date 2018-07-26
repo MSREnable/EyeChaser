@@ -16,6 +16,8 @@ namespace EyeChaser.Controls
         public readonly DependencyProperty ParentNodeProperty = DependencyProperty.Register(nameof(ParentNode), typeof(IChaserQueryNode<Range1D>), typeof(BoxRootControl),
             new PropertyMetadata(null, ActualParentNodeChanged));
 
+        public readonly DependencyProperty EngineProperty = DependencyProperty.Register(nameof(Engine), typeof(IChaserQuery<Range1D>), typeof(BoxRootControl), new PropertyMetadata(null));
+
         public readonly DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxRootControl),
             new PropertyMetadata(0.01, ParentNodeChanged));
 
@@ -27,6 +29,12 @@ namespace EyeChaser.Controls
             this.InitializeComponent();
 
             SizeChanged += (s, e) => { var t = DrawChildrenAsync(); };
+        }
+
+        public IChaserQuery<Range1D> Engine
+        {
+            get { return (IChaserQuery<Range1D>)GetValue(EngineProperty); }
+            set { SetValue(EngineProperty, value); }
         }
 
         public IChaserQueryNode<Range1D> ParentNode
@@ -87,10 +95,8 @@ namespace EyeChaser.Controls
             var position = e.GetCurrentPoint(this).Position;
             if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
             {
-                // Compute the inverse transform that NavigateTo will apply
-                var desiredNavigateCenter = (position.Y / ActualHeight);
-                var offset = (desiredNavigateCenter - this.ParentNode.QueryCoords.LowerBound) / this.ParentNode.QueryCoords.BoundSize;
-                ParentNode.NavigateTo(new Range1D(offset, offset));
+                var offset = (position.Y / ActualHeight);
+                Engine.NavigateTo(new Range1D(offset, offset));
 
                 e.Handled = true;
             }
