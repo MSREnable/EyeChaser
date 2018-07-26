@@ -52,19 +52,6 @@ namespace EyeChaser.Controls
             var t = control.DrawChildrenAsync();
         }
 
-        protected override void OnPointerPressed(PointerRoutedEventArgs e)
-        {
-            var position = e.GetCurrentPoint(this).Position;
-            if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
-            {
-                var offset = position.Y / ActualHeight;
-                ParentNode.NavigateTo(new Range1D(offset, offset));
-
-                e.Handled = true;
-            }
-            base.OnPointerPressed(e);
-        }
-
         async Task DrawChildrenAsync()
         {
             TheCanvas.Children.Clear();

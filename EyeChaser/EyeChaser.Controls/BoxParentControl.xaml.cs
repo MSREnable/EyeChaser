@@ -41,18 +41,5 @@ namespace EyeChaser.Controls
             get { return (bool)GetValue(HideSpacesProperty); }
             set { SetValue(HideSpacesProperty, value); }
         }
-
-        protected override void OnPointerPressed(PointerRoutedEventArgs e)
-        {
-            var position = e.GetCurrentPoint(this).Position;
-            if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
-            {
-                var offset = position.Y / ActualHeight;
-                Node.NavigateTo(new Range1D(offset, offset));
-
-                e.Handled = true;
-            }
-            base.OnPointerPressed(e);
-        }
     }
 }

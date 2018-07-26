@@ -87,7 +87,9 @@ namespace EyeChaser.Controls
             var position = e.GetCurrentPoint(this).Position;
             if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
             {
-                var offset = position.Y / ActualHeight;
+                // Compute the inverse transform that NavigateTo will apply
+                var desiredNavigateCenter = (position.Y / ActualHeight);
+                var offset = (desiredNavigateCenter - this.ParentNode.QueryCoords.LowerBound) / this.ParentNode.QueryCoords.BoundSize;
                 ParentNode.NavigateTo(new Range1D(offset, offset));
 
                 e.Handled = true;

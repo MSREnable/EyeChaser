@@ -103,7 +103,7 @@ namespace EyeChaser.Queries
             // First expand about the point that was clicked, so that point stays under the mouse
             var expandFactor = 1.2;
 
-            var navigateCenter = walker.Offset.LowerBound * (oldRootCoords.UpperBound - oldRootCoords.LowerBound) + oldRootCoords.LowerBound;
+            var navigateCenter = walker.Offset.LowerBound * (oldRootCoords.BoundSize) + oldRootCoords.LowerBound;
 
             var expandedRootCoords = new Range1D((oldRootCoords.LowerBound - navigateCenter) * expandFactor + navigateCenter,
                 (oldRootCoords.UpperBound - navigateCenter) * expandFactor + navigateCenter);
