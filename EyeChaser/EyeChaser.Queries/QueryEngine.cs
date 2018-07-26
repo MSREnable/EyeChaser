@@ -21,59 +21,6 @@ namespace EyeChaser.Queries
             Root = root;
         }
 
-        public ChaserQueryNodeOffset<Range1D> MapToChild(ChaserQueryNodeOffset<Range1D> parent)
-        {
-            var child = parent;
-
-            var parentOffset = parent.Offset;
-
-            if (!(0 <= parentOffset.LowerBound && parentOffset.UpperBound <= 1))
-            {
-                throw new NotImplementedException("Need to walk up and down tree to do this!");
-            }
-
-            if (parentOffset.LowerBound != parentOffset.UpperBound)
-            {
-                throw new NotImplementedException("Don't know how to work for spans");
-            }
-
-            var parentNode = parent.Node;
-
-            if (!parentNode.IsUpdateNeeded)
-            {
-                using (var enumerator = parentNode.Children.GetEnumerator())
-                {
-                    if (enumerator.MoveNext())
-                    {
-                        var candidate = enumerator.Current;
-                        while (candidate.QueryCoords.LowerBound > parentOffset.LowerBound && enumerator.MoveNext())
-                        {
-                            candidate = enumerator.Current;
-                        }
-
-                        child = new ChaserQueryNodeOffset<Range1D>(candidate,
-                            new Range1D((parentOffset.LowerBound - candidate.QueryCoords.LowerBound) / (candidate.QueryCoords.BoundSize),
-                            (parentOffset.LowerBound - candidate.QueryCoords.UpperBound) / (candidate.QueryCoords.BoundSize)));
-                    }
-                }
-            }
-
-            return child;
-        }
-
-        public ChaserQueryNodeOffset<Range1D> MapToParent(ChaserQueryNodeOffset<Range1D> child)
-        {
-            var childNode = child.Node;
-
-            var parentNode = childNode.Parent;
-            var parentOffset = new Range1D(childNode.QueryCoords.LowerBound + child.Offset.LowerBound * (childNode.QueryCoords.BoundSize),
-                childNode.QueryCoords.LowerBound + child.Offset.UpperBound * (childNode.QueryCoords.BoundSize));
-
-            var parent = new ChaserQueryNodeOffset<Range1D>(parentNode, parentOffset);
-
-            return parent;
-        }
-
         public void RemoveRoot()
         {
             throw new NotImplementedException();

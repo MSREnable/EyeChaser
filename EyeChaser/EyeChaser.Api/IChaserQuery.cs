@@ -32,19 +32,5 @@
         /// <param name="coords">Click coordinates, expressed in the same coordinate system as the Root.
         /// For now, we support only the case where coords.LowerBound == coords.UpperBound.</param>
         void NavigateTo(Coords coords);
-
-        /// <summary>
-        /// Convert a reference to a child node to one in its parent.
-        /// </summary>
-        /// <param name="child">The pair representing the child node position.</param>
-        /// <returns>The corresponding node position in the parent.</returns>
-        ChaserQueryNodeOffset<Coords> MapToParent(ChaserQueryNodeOffset<Coords> child);
-
-        /// <summary>
-        /// Convert a reference to a parent node to one of its children.
-        /// </summary>
-        /// <param name="parent">The pair representing the parent node position.</param>
-        /// <returns>THe corresponding node position in a child of the parent.</returns>
-        ChaserQueryNodeOffset<Coords> MapToChild(ChaserQueryNodeOffset<Coords> parent);
     }
 }
