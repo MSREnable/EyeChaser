@@ -21,7 +21,7 @@
                     <TextBlock Grid.Column="0" Text="{x:Bind Node.Caption, Mode=OneWay}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Viewbox>
             </Border>
-            <local:BoxChildrenControl Grid.Column="1" ProbabilityLimit="{x:Bind ProbabilityLimit}" ParentNode="{x:Bind Node, Mode=OneWay}" HideSpaces="{x:Bind HideSpaces, Mode=OneWay}"/>
+            <local:BoxChildrenControl Grid.Column="1" ProbabilityLimit="{x:Bind ProbabilityLimit, Mode=OneWay}" ParentNode="{x:Bind Node, Mode=OneWay}" HideSpaces="{x:Bind HideSpaces, Mode=OneWay}"/>
         </Grid>
     </Grid>
 </UserControl>

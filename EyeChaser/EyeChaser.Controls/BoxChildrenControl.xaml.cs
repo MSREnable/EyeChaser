@@ -67,8 +67,6 @@ namespace EyeChaser.Controls
 
         async Task DrawChildrenAsync()
         {
-            TheCanvas.Children.Clear();
-
             var parent = ParentNode;
 
             var height = ActualHeight;
@@ -82,6 +80,9 @@ namespace EyeChaser.Controls
                     await parent.UpdateAsync();
                 }
 
+                var childControlIndex = 0;
+                var currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl)TheCanvas.Children[childControlIndex] : null;
+
                 foreach (IChaserQueryNode<Range1D> child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
@@ -89,19 +90,46 @@ namespace EyeChaser.Controls
                     double onScreenProb = Math.Min(1.0, child.QueryCoords.UpperBound) - Math.Max(0.0, child.QueryCoords.LowerBound);
                     if (onScreenProb >= limit)
                     {
-                        double overallProb = child.QueryCoords.BoundSize;
-                        var control = new BoxParentControl
+                        if (currentChildControl != null && string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) < 0)
                         {
-                            Width = ActualWidth,
-                            Node = child,
-                            ProbabilityLimit = limit / overallProb,
-                            Height = height * overallProb
-                        };
+                            TheCanvas.Children.RemoveAt(childControlIndex);
+                            currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl)TheCanvas.Children[childControlIndex] : null;
+                        }
+
+                        BoxParentControl control;
+
+                        double overallProb = child.QueryCoords.BoundSize;
+
+                        if (currentChildControl == null || string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) != 0)
+                        {
+                            control = new BoxParentControl
+                            {
+                                Node = child
+                            };
+
+                            TheCanvas.Children.Insert(childControlIndex, control);
+
+                            childControlIndex++;
+                        }
+                        else
+                        {
+                            control = currentChildControl;
+
+                            childControlIndex++;
+                            currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl)TheCanvas.Children[childControlIndex] : null;
+                        }
+
+                        control.Width = ActualWidth;
+                        control.ProbabilityLimit = limit / overallProb;
+                        control.Height = height * overallProb;
 
                         Canvas.SetTop(control, height * child.QueryCoords.LowerBound);
-
-                        TheCanvas.Children.Add(control);
                     }
+                }
+
+                while (childControlIndex < TheCanvas.Children.Count)
+                {
+                    TheCanvas.Children.RemoveAt(TheCanvas.Children.Count - 1);
                 }
             }
         }
