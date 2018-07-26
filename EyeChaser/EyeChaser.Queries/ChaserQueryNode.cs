@@ -11,16 +11,14 @@ namespace EyeChaser.Queries
     // This is now a fairly plan DTO (except UpdateAsync - could move that into the packing algorithm class?), could maybe fold into IChasterQueryNode?
     internal class ChaserQueryNode<Coords> : IChaserQueryNode<Coords>, INotifyPropertyChanged
     {
-        readonly IChaserQuery<Coords> _query;
         readonly IChaserNode _node;
         Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> _packingAlgorithm;
         Coords _coords;
 
         List<ChaserQueryNode<Coords>> _list = new List<ChaserQueryNode<Coords>>();
 
-        public ChaserQueryNode(IChaserQuery<Coords> query, IChaserQueryNode<Coords> parent, IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
+        public ChaserQueryNode(IChaserQueryNode<Coords> parent, IChaserNode node, Func<IReadOnlyList<IChaserNode>, IReadOnlyList<Coords>> packingAlgorithm, Coords coords)
         {
-            _query = query;
             Parent = parent;
             _node = node;
             _packingAlgorithm = packingAlgorithm;
@@ -62,11 +60,6 @@ namespace EyeChaser.Queries
             _propertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Children)));
         }
 
-        public void NavigateTo(Coords coords)
-        {
-            _query.NavigateTo(this, coords);
-        }
-
         public bool IsUpdateNeeded { get; private set; }
 
         public Task UpdateAsync()
@@ -82,7 +75,7 @@ namespace EyeChaser.Queries
                     new XmlChaserNode { Caption = "wibble", Probability = 0.1 }
                 };
             }
-            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(_query, this, child, _packingAlgorithm, coords)));
+            _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(this, child, _packingAlgorithm, coords)));
 
             return Task.FromResult(true);
         }

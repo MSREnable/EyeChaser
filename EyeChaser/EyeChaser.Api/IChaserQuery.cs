@@ -18,32 +18,19 @@
         /// <summary>
         /// The minimum total cumulative probability of nodes added to tree.
         /// </summary>
-        double MinimumCumulatativeProbabilityTotal { get; set; }
+        double MinimumCumulativeProbabilityTotal { get; set; }
 
         /// <summary>
         /// Remove the query tree root.
+        /// ALAN should this be some sort of "Make some child of the existing root become the new root" operation? Or ChangeRoot?
         /// </summary>
         void RemoveRoot();
 
         /// <summary>
-        /// Requery to the specificied node.
+        /// Move (nodes starting at the Root) in response to a click at the specified coords.
         /// </summary>
-        /// <param name="node"></param>
-        /// <param name="coords"></param>
-        void NavigateTo(IChaserQueryNode<Coords> node, Coords coords);
-
-        /// <summary>
-        /// Convert a reference to a child node to one in its parent.
-        /// </summary>
-        /// <param name="child">The pair representing the child node position.</param>
-        /// <returns>The corresponding node position in the parent.</returns>
-        ChaserQueryNodeOffset<Coords> MapToParent(ChaserQueryNodeOffset<Coords> child);
-
-        /// <summary>
-        /// Convert a reference to a parent node to one of its children.
-        /// </summary>
-        /// <param name="parent">The pair representing the parent node position.</param>
-        /// <returns>THe corresponding node position in a child of the parent.</returns>
-        ChaserQueryNodeOffset<Coords> MapToChild(ChaserQueryNodeOffset<Coords> parent);
+        /// <param name="coords">Click coordinates, expressed in the same coordinate system as the Root.
+        /// For now, we support only the case where coords.LowerBound == coords.UpperBound.</param>
+        void NavigateTo(Coords coords);
     }
 }

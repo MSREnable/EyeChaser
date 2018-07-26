@@ -32,6 +32,7 @@ namespace EyeChaser.TestShell
 
             var engine = await XmlChaserQueryEngine.CreateAsync(reader);
 
+            BoxControl.Engine = engine;
             BoxControl.ParentNode = engine.Root;
         }
     }
