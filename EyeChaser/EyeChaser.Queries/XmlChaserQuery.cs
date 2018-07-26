@@ -7,17 +7,20 @@ using System.Xml;
 
 namespace EyeChaser.Queries
 {
-    public class XmlChaserQueryEngine : QueryEngine
+    public class XmlChaserQueryEngine
     {
-        XmlChaserQueryEngine()
+        private XmlChaserQueryEngine()
         {
         }
 
-        public static async Task<XmlChaserQueryEngine> CreateAsync(XmlReader reader, double minProbThreshold = 0.0)
+        public static async Task<Api.IChaserQuery<Range1D>> CreateAsync(XmlReader reader, double minProbThreshold = 0.0)
         {
             var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
             var sortedRoot = new AlphabeticChaserNode(xmlRoot, minProbThreshold);
-            var engine = new XmlChaserQueryEngine();
+            // ALAN TODO refactor. QueryEngine and ChaserQueryNode both refer to each other...
+            // probably two separate concepts here: (1) packing to initial coordinates from probabilities,
+            // (2) movement of coordinates...??
+            var engine = new QueryEngine();
             var root = new ChaserQueryNode<Range1D>(engine, null, sortedRoot, Renormalize, new Range1D(0.0, 1.0));
             engine.SetRoot(root);
             return engine;
