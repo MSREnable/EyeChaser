@@ -6,10 +6,6 @@ namespace EyeChaser.Queries
 {
     public class QueryEngine : IChaserQuery<Range1D>
     {
-        ChaserQueryNodeOffset<Range1D> _lowerBound;
-
-        ChaserQueryNodeOffset<Range1D> _upperBound;
-
         public IChaserQueryNode<Range1D> Root { get; private set; }
 
         public double MinimumQueryProbability { get; set; } = 0.05;
@@ -23,8 +19,6 @@ namespace EyeChaser.Queries
         internal void SetRoot(IChaserQueryNode<Range1D> root)
         {
             Root = root;
-            _lowerBound = new ChaserQueryNodeOffset<Range1D>(Root, new Range1D(0, 0));
-            _upperBound = new ChaserQueryNodeOffset<Range1D>(Root, new Range1D(1, 1));
         }
 
         public ChaserQueryNodeOffset<Range1D> MapToChild(ChaserQueryNodeOffset<Range1D> parent)
