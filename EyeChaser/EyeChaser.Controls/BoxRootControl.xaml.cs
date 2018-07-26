@@ -120,7 +120,9 @@ namespace EyeChaser.Controls
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
                     // (Note that if one edge is offscreen, we could skip over all remaining siblings?)
                     double onScreenProb = parentSize * Math.Min(1.0, child.QueryCoords.UpperBound) - Math.Max(0.0, child.QueryCoords.LowerBound);
-                    if (onScreenProb >= limit)
+                    var startPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.LowerBound;
+                    var endPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.UpperBound;
+                    if (onScreenProb >= limit && 0 <= endPosition && startPosition <= 1)
                     {
                         if (currentChildControl != null && string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) < 0)
                         {
@@ -129,9 +131,6 @@ namespace EyeChaser.Controls
                         }
 
                         BoxParentControl control;
-
-                        var startPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.LowerBound;
-                        var endPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.UpperBound;
 
                         double overallProb = endPosition - startPosition;
 
@@ -161,8 +160,8 @@ namespace EyeChaser.Controls
                         Canvas.SetTop(control, height * startPosition);
                     }
                 }
-                
-                while(childControlIndex<TheCanvas.Children.Count)
+
+                while (childControlIndex < TheCanvas.Children.Count)
                 {
                     TheCanvas.Children.RemoveAt(TheCanvas.Children.Count - 1);
                 }
