@@ -155,6 +155,7 @@ namespace EyeChaser.Controls
                             currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl)TheCanvas.Children[childControlIndex] : null;
                         }
 
+                        control.VisibleRange = new Range1D(Math.Max(0, -startPosition / overallProb), Math.Min(1, (1 - startPosition) / overallProb));
                         control.Width = ActualWidth;
                         control.ProbabilityLimit = limit / overallProb;
                         control.Height = height * overallProb;

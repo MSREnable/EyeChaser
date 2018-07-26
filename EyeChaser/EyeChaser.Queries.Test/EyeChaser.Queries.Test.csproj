@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EyeChaser.Api\EyeChaser.Api.csproj">
+      <Project>{3FA06303-8E51-4CBB-8D16-9623BDB9DF5E}</Project>
+      <Name>EyeChaser.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EyeChaser.Queries\EyeChaser.Queries.csproj">
       <Project>{3f4afbae-4332-42dc-b8cd-a76420bd14dc}</Project>
       <Name>EyeChaser.Queries</Name>

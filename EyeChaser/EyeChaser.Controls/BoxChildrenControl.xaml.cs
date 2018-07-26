@@ -4,7 +4,6 @@ using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -20,6 +19,9 @@ namespace EyeChaser.Controls
 
         public readonly DependencyProperty HideSpacesProperty = DependencyProperty.Register(nameof(HideSpaces), typeof(bool), typeof(BoxChildrenControl),
             new PropertyMetadata(false));
+
+        public readonly DependencyProperty VisibleRangeProperty = DependencyProperty.Register(nameof(VisibleRange), typeof(Range1D), typeof(BoxChildrenControl),
+            new PropertyMetadata(new Range1D(0, 1)));
 
         public BoxChildrenControl()
         {
@@ -46,6 +48,12 @@ namespace EyeChaser.Controls
             set { SetValue(HideSpacesProperty, value); }
         }
 
+        public Range1D VisibleRange
+        {
+            get { return (Range1D)GetValue(VisibleRangeProperty); }
+            set { SetValue(VisibleRangeProperty, value); }
+        }
+
         static void ParentNodeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (BoxChildrenControl)d;
@@ -70,12 +78,14 @@ namespace EyeChaser.Controls
                 var childControlIndex = 0;
                 var currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl)TheCanvas.Children[childControlIndex] : null;
 
+                var visibleRange = VisibleRange;
+
                 foreach (IChaserQueryNode<Range1D> child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
                     // (Note that if one edge is offscreen, we could skip over all remaining siblings?)
                     double onScreenProb = Math.Min(1.0, child.QueryCoords.UpperBound) - Math.Max(0.0, child.QueryCoords.LowerBound);
-                    if (onScreenProb >= limit)
+                    if (onScreenProb >= limit && visibleRange.LowerBound <= child.QueryCoords.UpperBound && child.QueryCoords.LowerBound <= visibleRange.UpperBound)
                     {
                         if (currentChildControl != null && string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) < 0)
                         {
@@ -107,6 +117,7 @@ namespace EyeChaser.Controls
                         }
 
                         control.Width = ActualWidth;
+                        control.VisibleRange = new Range1D(Math.Max(0, -child.QueryCoords.LowerBound / overallProb), Math.Min(1, (1 - child.QueryCoords.LowerBound) / overallProb));
                         control.ProbabilityLimit = limit / overallProb;
                         control.Height = height * overallProb;
 
