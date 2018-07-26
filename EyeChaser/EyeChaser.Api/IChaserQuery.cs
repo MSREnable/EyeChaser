@@ -18,7 +18,7 @@
         /// <summary>
         /// The minimum total cumulative probability of nodes added to tree.
         /// </summary>
-        double MinimumCumulatativeProbabilityTotal { get; set; }
+        double MinimumCumulativeProbabilityTotal { get; set; }
 
         /// <summary>
         /// Remove the query tree root.

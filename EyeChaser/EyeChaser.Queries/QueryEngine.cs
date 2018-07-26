@@ -10,7 +10,7 @@ namespace EyeChaser.Queries
 
         public double MinimumQueryProbability { get; set; } = 0.05;
 
-        public double MinimumCumulatativeProbabilityTotal { get; set; } = 0.95;
+        public double MinimumCumulativeProbabilityTotal { get; set; } = 0.95;
 
         internal QueryEngine()
         {
