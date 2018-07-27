@@ -106,6 +106,10 @@
       <Project>{3F4AFBAE-4332-42DC-B8CD-A76420BD14DC}</Project>
       <Name>EyeChaser.Queries</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EyeChaser.StaticModel\EyeChaser.StaticModel.csproj">
+      <Project>{0d352e70-3413-42fb-8ff6-0c20beb5d51d}</Project>
+      <Name>EyeChaser.StaticModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MockData.xml" />
