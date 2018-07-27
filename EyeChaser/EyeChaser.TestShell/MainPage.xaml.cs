@@ -1,10 +1,6 @@
 ﻿using EyeChaser.Queries;
-using EyeChaser.StaticModel;
+using EyeChaser.SwiftKeyModel;
 using EyeChaser.Transforms;
-using System;
-using System.IO;
-using System.Xml;
-using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -26,14 +22,8 @@ namespace EyeChaser.TestShell
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var InstallationFolder = Package.Current.InstalledLocation;
-            var file = await InstallationFolder.GetFileAsync(@"Assets\MockData.xml");
-            var stream = await file.OpenStreamForReadAsync();
-            var settings = new XmlReaderSettings { Async = true };
-            var reader = XmlReader.Create(stream, settings);
-
-            var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
-            var sortedRoot = new AlphabeticChaserNode(xmlRoot, 0.05);
+            var swiftKeyRoot = SwiftKeyNode.CreateRoot();
+            var sortedRoot = new AlphabeticChaserNode(swiftKeyRoot, 0.05);
 
             var engine = XmlChaserQueryEngine.Create(sortedRoot);
 

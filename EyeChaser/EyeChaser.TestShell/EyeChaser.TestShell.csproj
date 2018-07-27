@@ -145,9 +145,9 @@
       <Project>{3f4afbae-4332-42dc-b8cd-a76420bd14dc}</Project>
       <Name>EyeChaser.Queries</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EyeChaser.StaticModel\EyeChaser.StaticModel.csproj">
-      <Project>{0d352e70-3413-42fb-8ff6-0c20beb5d51d}</Project>
-      <Name>EyeChaser.StaticModel</Name>
+    <ProjectReference Include="..\EyeChaser.SwiftKeyModel\EyeChaser.SwiftKeyModel.csproj">
+      <Project>{67509602-f9c9-4afb-baaa-654c8d8b6952}</Project>
+      <Name>EyeChaser.SwiftKeyModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\EyeChaser.Transforms\EyeChaser.Transforms.csproj">
       <Project>{f95b1378-bb84-43c7-83a3-2cdff3a2d08b}</Project>
