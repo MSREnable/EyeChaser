@@ -24,7 +24,7 @@ namespace EyeChaser.Transforms
 
         public string Caption => _wrapped.Caption;
 
-        public string SortKey => _wrapped.SortKey;
+        public string SortKey => _wrapped.Caption;
 
         public double Probability => _wrapped.Probability;
 
