@@ -10,6 +10,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <controls:BoxChildrenControl2D x:Name="BoxControl"/>
+        <controls:BoxRootControl2D x:Name="BoxControl"/>
     </Grid>
 </Page>

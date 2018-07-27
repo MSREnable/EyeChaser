@@ -32,6 +32,7 @@ namespace EyeChaser.TestShell
             var reader = XmlReader.Create(stream, settings);
 
             BoxControl.ParentNode = await XmlTileNode.ReadXmlAsync(reader);
+            BoxControl.Engine = new QueryEngine2D(BoxControl.ParentNode);
         }
     }
 }
