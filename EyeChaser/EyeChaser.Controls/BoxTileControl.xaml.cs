@@ -35,14 +35,5 @@ namespace EyeChaser.Controls
             get { return (Brush)GetValue(TileColorProperty); }
             set { SetValue(TileColorProperty, value); }
         }
-
-        private void TextBlock_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            string u = Node.Uri;
-            if (u != "")
-            {
-                Windows.System.Launcher.LaunchUriAsync(new Uri(u));
-            }
-        }
     }
 }

@@ -11,8 +11,7 @@
 
     <Grid>
         <Border BorderBrush="LightGray" BorderThickness="2" Background="{x:Bind TileColor, Mode=OneWay}">
-            <TextBlock Text="{x:Bind Node.Caption, Mode=OneWay}" FontFamily="{x:Bind FontFamily, Mode=OneWay}" FontSize="{x:Bind FontSize, Mode=OneWay}" TextWrapping = "Wrap" HorizontalAlignment = "Center" VerticalAlignment="Center" 
-                       PointerReleased="TextBlock_PointerReleased"/>
+            <TextBlock Text="{x:Bind Node.Caption, Mode=OneWay}" FontFamily="{x:Bind FontFamily, Mode=OneWay}" FontSize="{x:Bind FontSize, Mode=OneWay}" TextWrapping = "Wrap" HorizontalAlignment = "Center" VerticalAlignment="Center" />
         </Border>
     </Grid>
 </UserControl>

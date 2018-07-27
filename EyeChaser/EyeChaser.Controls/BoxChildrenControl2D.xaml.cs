@@ -80,6 +80,7 @@ namespace EyeChaser.Controls
                 foreach (XmlChaserQueryNode2D child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
+                    // ALAN the clipping here assumes QueryCoords are absolute i.e. (0,1,0,1) = the whole screen, which is not the case
                     double onScreenProb = Math.Max(0, Math.Min(1.0, child.QueryCoords.Right) - Math.Max(0.0, child.QueryCoords.Left))
                         * Math.Max(0, Math.Min(1.0, child.QueryCoords.Bottom) - Math.Max(0.0, child.QueryCoords.Top));
                     if (onScreenProb >= limit)
@@ -128,6 +129,12 @@ namespace EyeChaser.Controls
                         Canvas.SetLeft(control, width * child.QueryCoords.Left);
 
                         TheCanvas.Children.Add(control);
+                        // TODO As above, we need an onScreenProb clipped to screen bounds not parent bounds, and a sensible threshold
+                        // (this generally won't do anything)
+                        if ((onScreenProb >= 0.8) && (child.Uri != ""))
+                        {
+                            Windows.System.Launcher.LaunchUriAsync(new Uri(child.Uri));
+                        }
                     }
                 }
             }
