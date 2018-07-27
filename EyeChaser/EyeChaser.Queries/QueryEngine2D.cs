@@ -7,14 +7,15 @@ namespace EyeChaser.Queries
 {
     public class QueryEngine2D : IChaserQuery<Rect2D>
     {
-        public IChaserQueryNode<Rect2D> Root { get; private set; }
+        public IChaserQueryNode<Rect2D> Root { get; }
 
         public double MinimumQueryProbability { get; set; } = 0.05;
 
         public double MinimumCumulativeProbabilityTotal { get; set; } = 0.95;
 
-        internal QueryEngine2D()
+        internal QueryEngine2D(IChaserQueryNode<Rect2D> root)
         {
+            this.Root = root;
         }
 
         public void RemoveRoot()
@@ -32,7 +33,7 @@ namespace EyeChaser.Queries
             var oldRootCoords = Root.QueryCoords;
 
             // First expand about the point that was clicked, so that point stays under the mouse
-            var expandFactor = 1.2;
+            var expandFactor = 1.1;
 
             var navigateX = coords.Left;
             var navigateY = coords.Top;

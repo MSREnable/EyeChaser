@@ -1,4 +1,5 @@
 ﻿using EyeChaser.Api;
+using EyeChaser.Queries;
 using EyeChaser.StaticModel;
 using System;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace EyeChaser.Controls
             var height = ActualHeight;
             var width = ActualWidth;
 
-            if (parent != null && !double.IsNaN(height))
+            if (parent != null && !double.IsNaN(width) && !double.IsNaN(height))
             {
                 var limit = ProbabilityLimit;
 
@@ -76,11 +77,11 @@ namespace EyeChaser.Controls
                     await parent.UpdateAsync();
                 }
 
-                foreach (XmlTileNode child in parent.Children)
+                foreach (XmlChaserQueryNode2D child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
-                    double onScreenProb = (Math.Min(1.0, child.QueryCoords.Right) - Math.Max(0.0, child.QueryCoords.Left))
-                        * (Math.Min(1.0, child.QueryCoords.Bottom) - Math.Max(0.0, child.QueryCoords.Top));
+                    double onScreenProb = Math.Max(0, Math.Min(1.0, child.QueryCoords.Right) - Math.Max(0.0, child.QueryCoords.Left))
+                        * Math.Max(0, Math.Min(1.0, child.QueryCoords.Bottom) - Math.Max(0.0, child.QueryCoords.Top));
                     if (onScreenProb >= limit)
                     {
                         double childHeight = child.QueryCoords.Height;
@@ -104,7 +105,7 @@ namespace EyeChaser.Controls
                             }
                             control = new BoxTileControl
                             {
-                                Node = (XmlTileNode)child,
+                                Node = child,
                                 FontFamily = (child.Caption.Length > 1) ? ScriptFont : SegoeFont,
                                 FontSize = 36 - child.Caption.Length,
                                 TileColor = b

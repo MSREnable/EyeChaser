@@ -1,38 +1,54 @@
 ﻿using EyeChaser.Api;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
 
 namespace EyeChaser.StaticModel
 {
-    public class XmlTileNode : IChaserQueryNode<Rect2D>
+    public class XmlTileNode : IChaserNode<XmlTileNode>
     {
-        public int Generation => throw new System.NotImplementedException();
+        readonly List<XmlTileNode> _children = new List<XmlTileNode>();
 
-        public IChaserQueryNode<Rect2D> Parent { get; private set; }
+        public XmlTileNode Parent { get; private set; }
 
-        public string Caption { get; private set; }
+        public string Caption { get; set; }
+
+        public double Probability { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public event NotifyCollectionChangedEventHandler CollectionChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public bool IsChildrenPopulated { get; private set; }
+
+        public IEnumerator<XmlTileNode> GetEnumerator() => _children.GetEnumerator();
+
+        public Task RefreshChildrenAsync() => Task.FromResult(0);
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public Rect2D prespecifiedCoords { get; private set; }
 
         public string Uri { get; private set; }
 
         public string ImageFile { get; private set; }
 
-        private readonly List<XmlTileNode> _children = new List<XmlTileNode>();
-
-        public IReadOnlyList<IChaserQueryNode<Rect2D>> Children
-        {
-            get { return _children; }
-        }
-
-        public Rect2D QueryCoords { get; private set; }
-
-        public bool IsUpdateNeeded => false;
-
-        public Task UpdateAsync() => Task.FromResult(false);
-
-        public static async Task<XmlTileNode> ReadXmlAsync(XmlReader reader)
+        public static async Task<XmlTileNode> ReadXmlAsync(XmlReader reader, XmlTileNode parent = null)
         {
             while (!reader.IsStartElement("Node") && !reader.IsStartElement("Group") && await reader.ReadAsync()) ;
 
@@ -44,7 +60,12 @@ namespace EyeChaser.StaticModel
             var uri = reader.GetAttribute(nameof(Uri)) ?? "";
             var image = reader.GetAttribute(nameof(ImageFile)) ?? "";
 
-            var root = new XmlTileNode { Caption = caption, QueryCoords = new Rect2D(left, right, top, bottom), Uri = uri, ImageFile = image };
+            var root = new XmlTileNode {
+                Caption = caption,
+                prespecifiedCoords = new Rect2D(left, right, top, bottom),
+                Uri = uri,
+                ImageFile = image
+            };
 
             if (reader.IsEmptyElement)
             {

@@ -30,9 +30,10 @@ namespace EyeChaser.TestShell
             var stream = await file.OpenStreamForReadAsync();
             var settings = new XmlReaderSettings { Async = true };
             var reader = XmlReader.Create(stream, settings);
+            var engine = await XmlChaserQueryNode2D.CreateAsync(reader);
 
-            BoxControl.ParentNode = await XmlTileNode.ReadXmlAsync(reader);
-            BoxControl.Engine = new QueryEngine2D(BoxControl.ParentNode);
+            BoxControl.Engine = engine;
+            BoxControl.ParentNode = engine.Root;
         }
     }
 }

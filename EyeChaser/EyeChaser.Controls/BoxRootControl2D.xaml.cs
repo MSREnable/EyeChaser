@@ -1,5 +1,4 @@
 ﻿using EyeChaser.Api;
-using EyeChaser.Queries;
 using EyeChaser.StaticModel;
 using System;
 using System.ComponentModel;
@@ -107,13 +106,17 @@ namespace EyeChaser.Controls
 
         async Task DrawChildrenAsync()
         {
+            TheCanvas.Children.Clear();
+
             var parent = ParentNode;
-            var parentSpan = parent.QueryCoords;
-            var parentSize = parentSpan.BoundSize;
+            var parentRect = parent.QueryCoords;
+            var parentWidth = parentRect.Width;
+            var parentHeight = parentRect.Height;
 
             var height = ActualHeight;
+            var width = ActualWidth;
 
-            if (parent != null && !double.IsNaN(height))
+            if (parent != null && !double.IsNaN(width) && !double.IsNaN(height))
             {
                 var limit = ProbabilityLimit;
 
@@ -122,58 +125,33 @@ namespace EyeChaser.Controls
                     await parent.UpdateAsync();
                 }
 
-                var childControlIndex = 0;
-                var currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl2D)TheCanvas.Children[childControlIndex] : null;
-
                 foreach (IChaserQueryNode<Rect2D> child in parent.Children)
                 {
                     // Choose to display, according to whether there is enough of the node *within the screen bounds*
                     // (Note that if one edge is offscreen, we could skip over all remaining siblings?)
-                    double onScreenProb = parentSize * Math.Min(1.0, child.QueryCoords.UpperBound) - Math.Max(0.0, child.QueryCoords.LowerBound);
-                    var startPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.LowerBound;
-                    var endPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.UpperBound;
-                    if (onScreenProb >= limit && 0 <= endPosition && startPosition <= 1)
+                    double onScreenProb = Math.Max(0, parentWidth * Math.Min(1.0, child.QueryCoords.Right) - Math.Max(0.0, child.QueryCoords.Left))
+                        * Math.Max(0, parentHeight * Math.Min(1.0, child.QueryCoords.Bottom) - Math.Max(0.0, child.QueryCoords.Top));
+                    if (onScreenProb >= limit)
                     {
-                        if (currentChildControl != null && string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) < 0)
+                        var leftX = parentRect.Left + parentWidth * child.QueryCoords.Left;
+                        var rightX = parentRect.Left + parentWidth * child.QueryCoords.Right;
+                        var topY = parentRect.Top + parentHeight * child.QueryCoords.Top;
+                        var bottomY = parentRect.Top + parentHeight * child.QueryCoords.Bottom;
+
+                        double overallProb = (bottomY - topY) * (rightX - leftX);
+                        var control = new BoxParentControl2D
                         {
-                            TheCanvas.Children.RemoveAt(childControlIndex);
-                            currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl2D)TheCanvas.Children[childControlIndex] : null;
-                        }
+                            Width = width * (rightX - leftX),
+                            Node = child,
+                            ProbabilityLimit = limit / overallProb,
+                            Height = height * (bottomY - topY)
+                        };
 
-                        BoxParentControl2D control;
+                        Canvas.SetTop(control, height * topY);
+                        Canvas.SetLeft(control, width * leftX);
 
-                        double overallProb = endPosition - startPosition;
-
-                        if (currentChildControl == null || string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) != 0)
-                        {
-                            control = new BoxParentControl2D
-                            {
-                                Node = child
-                            };
-
-                            TheCanvas.Children.Insert(childControlIndex, control);
-
-                            childControlIndex++;
-                        }
-                        else
-                        {
-                            control = currentChildControl;
-
-                            childControlIndex++;
-                            currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl2D)TheCanvas.Children[childControlIndex] : null;
-                        }
-
-                        control.Width = ActualWidth;
-                        control.ProbabilityLimit = limit / overallProb;
-                        control.Height = height * overallProb;
-
-                        Canvas.SetTop(control, height * startPosition);
+                        TheCanvas.Children.Add(control);
                     }
-                }
-
-                while (childControlIndex < TheCanvas.Children.Count)
-                {
-                    TheCanvas.Children.RemoveAt(TheCanvas.Children.Count - 1);
                 }
             }
         }

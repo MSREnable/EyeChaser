@@ -1,5 +1,5 @@
 ﻿using EyeChaser.Api;
-using EyeChaser.StaticModel;
+using EyeChaser.Queries;
 using System;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -13,7 +13,7 @@ namespace EyeChaser.Controls
 {
     public sealed partial class BoxTileControl : UserControl
     {
-        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(XmlTileNode), typeof(BoxTileControl),
+        public readonly DependencyProperty NodeProperty = DependencyProperty.Register(nameof(Node), typeof(XmlChaserQueryNode2D), typeof(BoxTileControl),
             new PropertyMetadata(null));
 
         public readonly DependencyProperty TileColorProperty = DependencyProperty.Register(nameof(TileColor), typeof(Brush), typeof(BoxTileControl),
@@ -24,9 +24,9 @@ namespace EyeChaser.Controls
             this.InitializeComponent();
         }
 
-        public XmlTileNode Node
+        public XmlChaserQueryNode2D Node
         {
-            get { return (XmlTileNode)GetValue(NodeProperty); }
+            get { return (XmlChaserQueryNode2D)GetValue(NodeProperty); }
             set { SetValue(NodeProperty, value); }
         }
 
