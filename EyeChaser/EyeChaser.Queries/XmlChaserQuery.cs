@@ -1,4 +1,5 @@
-﻿using EyeChaser.StaticModel;
+﻿using EyeChaser.Api;
+using EyeChaser.StaticModel;
 using EyeChaser.Transforms;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,15 @@ using System.Xml;
 
 namespace EyeChaser.Queries
 {
-    public class XmlChaserQueryEngine
+    public static class XmlChaserQueryEngine
     {
-        private XmlChaserQueryEngine()
+        public static Api.IChaserQuery<Range1D> Create(IChaserNode root)
         {
-        }
-
-        public static async Task<Api.IChaserQuery<Range1D>> CreateAsync(XmlReader reader, double minProbThreshold = 0.0)
-        {
-            var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
-            var sortedRoot = new AlphabeticChaserNode(xmlRoot, minProbThreshold);
             // ALAN TODO refactor, separate the two concepts here: (1) packing to initial coordinates from probabilities,
             // (2) movement of coordinates...
             var engine = new QueryEngine();
-            var root = new ChaserQueryNode<Range1D>(null, sortedRoot, Renormalize, new Range1D(0.0, 1.0));
-            engine.SetRoot(root);
+            var queryRoot = new ChaserQueryNode<Range1D>(null, root, Renormalize, new Range1D(0.0, 1.0));
+            engine.SetRoot(queryRoot);
             return engine;
         }
 
