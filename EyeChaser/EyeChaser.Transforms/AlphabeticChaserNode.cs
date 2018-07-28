@@ -23,8 +23,6 @@ namespace EyeChaser.Transforms
 
         public string Caption => _wrapped.Caption;
 
-        public string SortKey => _wrapped.SortKey;
-
         public double Probability => _wrapped.Probability;
 
         public bool IsChildrenPopulated => throw new NotImplementedException();
@@ -34,7 +32,7 @@ namespace EyeChaser.Transforms
 
         public int CompareTo(AlphabeticChaserNode other)
         {
-            return SortKey.CompareTo(other.SortKey);
+            return Caption.CompareTo(other.Caption);
         }
 
         public IEnumerator<AlphabeticChaserNode> GetEnumerator()

@@ -14,7 +14,6 @@ namespace EyeChaser.StaticModel.Test
         static void CheckSame(IChaserNode expected, IChaserNode actual)
         {
             Assert.AreEqual(expected.Caption, actual.Caption);
-            Assert.AreEqual(expected.SortKey, actual.SortKey);
             Assert.AreEqual(expected.Probability, actual.Probability);
 
             var expectedEnumerator = expected.GetEnumerator();

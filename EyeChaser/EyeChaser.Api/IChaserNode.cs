@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace EyeChaser.Api
 {
@@ -15,11 +14,6 @@ namespace EyeChaser.Api
         /// Display caption for node.
         /// </summary>
         string Caption { get; }
-
-        /// <summary>
-        /// Key, unique among peers, that can be used to order node.
-        /// </summary>
-        string SortKey { get; }
 
         /// <summary>
         /// Probability among peers of node.
