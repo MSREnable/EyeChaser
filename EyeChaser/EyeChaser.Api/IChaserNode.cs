@@ -27,11 +27,6 @@ namespace EyeChaser.Api
         double Probability { get; }
 
         /// <summary>
-        /// True when the node has children populated.
-        /// </summary>
-        bool IsChildrenPopulated { get; }
-
-        /// <summary>
         /// Load or refresh children.
         /// </summary>
         /// <returns></returns>

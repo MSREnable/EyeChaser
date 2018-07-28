@@ -34,8 +34,6 @@ namespace EyeChaser.StaticModel
             remove { }
         }
 
-        public bool IsChildrenPopulated { get; private set; }
-
         public IEnumerator<XmlChaserNode> GetEnumerator()
         {
             return (_children ?? _empty).GetEnumerator();
