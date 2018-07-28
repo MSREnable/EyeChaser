@@ -128,7 +128,7 @@ namespace EyeChaser.StaticModel
             return root;
         }
 
-        public static async Task<XmlChaserNode> ReadXmlAsync(XmlReader reader)
+        static async Task<XmlChaserNode> ReadXmlNodeAsync(XmlReader reader)
         {
             while (!reader.IsStartElement("Node") && await reader.ReadAsync()) ;
 
@@ -136,7 +136,14 @@ namespace EyeChaser.StaticModel
             var probabilityString = reader.GetAttribute(nameof(Probability));
             var probability = double.Parse(probabilityString);
 
-            var root = new XmlChaserNode { Caption = caption, Probability = probability };
+            var node = new XmlChaserNode { Caption = caption, Probability = probability };
+
+            return node;
+        }
+
+        static async Task ReadXmlChildrenAsync(XmlReader reader, XmlChaserNode parent, XmlChaserNode root)
+        {
+            var isLeaf = true;
 
             if (reader.IsEmptyElement)
             {
@@ -148,12 +155,30 @@ namespace EyeChaser.StaticModel
                 {
                     if (reader.IsStartElement("Node"))
                     {
-                        var child = await ReadXmlAsync(reader);
-                        root.Add(child);
+                        var child = await ReadXmlNodeAsync(reader);
+                        await ReadXmlChildrenAsync(reader, child, root);
+                        parent.Add(child);
+
+                        isLeaf = false;
                     }
                 }
                 await reader.ReadAsync();
             }
+
+            if (isLeaf)
+            {
+                foreach (var child in root)
+                {
+                    parent.Add(child);
+                }
+            }
+        }
+
+        public static async Task<XmlChaserNode> ReadXmlAsync(XmlReader reader)
+        {
+            var root = await ReadXmlNodeAsync(reader);
+
+            await ReadXmlChildrenAsync(reader, root, root);
 
             return root;
         }

@@ -1,5 +1,4 @@
 ﻿using EyeChaser.Api;
-using EyeChaser.StaticModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,15 +63,6 @@ namespace EyeChaser.Queries
         {
             _list.Clear();
             IReadOnlyList<IChaserNode> children = _node.Cast<IChaserNode>().ToList();
-            if (children.Count == 0)
-            {
-                children = new[]
-                {
-                    new XmlChaserNode { Caption = "aardvark", Probability = 0.1 },
-                    new XmlChaserNode { Caption = "blah", Probability = 0.8 },
-                    new XmlChaserNode { Caption = "wibble", Probability = 0.1 }
-                };
-            }
             _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(this, child, _packingAlgorithm, coords)));
 
             return Task.FromResult(true);
