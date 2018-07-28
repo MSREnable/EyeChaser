@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace EyeChaser.Transforms
 {
@@ -59,11 +58,6 @@ namespace EyeChaser.Transforms
             }
 
             return _sortedSet.GetEnumerator();
-        }
-
-        public Task RefreshChildrenAsync()
-        {
-            return Task.FromResult(false);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

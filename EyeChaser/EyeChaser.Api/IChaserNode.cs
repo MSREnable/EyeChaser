@@ -25,12 +25,6 @@ namespace EyeChaser.Api
         /// Probability among peers of node.
         /// </summary>
         double Probability { get; }
-
-        /// <summary>
-        /// Load or refresh children.
-        /// </summary>
-        /// <returns></returns>
-        Task RefreshChildrenAsync();
     }
 
     /// <summary>
