@@ -67,5 +67,10 @@ namespace EyeChaser.Queries
 
             return Task.FromResult(true);
         }
+
+        public override string ToString()
+        {
+            return Parent == null ? Caption : Parent.ToString() + ".." + Caption;
+        }
     }
 }

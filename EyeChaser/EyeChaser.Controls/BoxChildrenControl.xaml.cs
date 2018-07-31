@@ -117,7 +117,8 @@ namespace EyeChaser.Controls
                         }
 
                         control.Width = ActualWidth;
-                        control.VisibleRange = new Range1D(Math.Max(0, -child.QueryCoords.LowerBound / overallProb), Math.Min(1, (1 - child.QueryCoords.LowerBound) / overallProb));
+                        control.VisibleRange = new Range1D(Math.Max(0, (visibleRange.LowerBound - child.QueryCoords.LowerBound) / overallProb),
+                            Math.Min(1, 1 - (child.QueryCoords.UpperBound - visibleRange.UpperBound) / overallProb));
                         control.ProbabilityLimit = limit / overallProb;
                         control.Height = height * overallProb;
 

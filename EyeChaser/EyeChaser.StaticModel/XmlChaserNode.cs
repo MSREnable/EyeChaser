@@ -167,10 +167,7 @@ namespace EyeChaser.StaticModel
 
             if (isLeaf)
             {
-                foreach (var child in root)
-                {
-                    parent.Add(child);
-                }
+                parent._children = root._children;
             }
         }
 

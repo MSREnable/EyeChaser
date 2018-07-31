@@ -106,13 +106,13 @@ namespace EyeChaser.Controls
         async Task DrawChildrenAsync()
         {
             var parent = ParentNode;
-            var parentSpan = parent.QueryCoords;
-            var parentSize = parentSpan.BoundSize;
-
             var height = ActualHeight;
 
             if (parent != null && !double.IsNaN(height))
             {
+                var parentSpan = parent.QueryCoords;
+                var parentSize = parentSpan.BoundSize;
+
                 var limit = ProbabilityLimit;
 
                 if (parent.IsUpdateNeeded)
@@ -132,7 +132,7 @@ namespace EyeChaser.Controls
                     var endPosition = parentSpan.LowerBound + parentSize * child.QueryCoords.UpperBound;
                     if (onScreenProb >= limit && 0 <= endPosition && startPosition <= 1)
                     {
-                        if (currentChildControl != null && string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) < 0)
+                        while (currentChildControl != null && string.CompareOrdinal(currentChildControl.Node.Caption, child.Caption) < 0)
                         {
                             TheCanvas.Children.RemoveAt(childControlIndex);
                             currentChildControl = childControlIndex < TheCanvas.Children.Count ? (BoxParentControl)TheCanvas.Children[childControlIndex] : null;
