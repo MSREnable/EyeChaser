@@ -9,7 +9,7 @@ using System.Xml;
 namespace EyeChaser.StaticModel.Test
 {
     [TestClass]
-    public class XnlChaserNodeTest
+    public class XmlChaserNodeTest
     {
         static async Task CheckSameAsync(IChaserNode expected, IChaserNode actual)
         {

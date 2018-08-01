@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="3a268226-36a7-4189-8cc6-b69a4b70c8e3" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>EyeChaser.MokeDataMaker</DisplayName>
+    <DisplayName>EyeChaser.MockDataMaker</DisplayName>
     <PublisherDisplayName>me</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="EyeChaser.MokeDataMaker.App">
+      EntryPoint="EyeChaser.MockDataMaker.App">
       <uap:VisualElements
-        DisplayName="EyeChaser.MokeDataMaker"
+        DisplayName="EyeChaser.MockDataMaker"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="EyeChaser.MokeDataMaker"
+        Description="EyeChaser.MockDataMaker"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
