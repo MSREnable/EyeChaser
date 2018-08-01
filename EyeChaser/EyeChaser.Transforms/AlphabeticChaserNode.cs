@@ -1,8 +1,6 @@
 ﻿using EyeChaser.Api;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace EyeChaser.Transforms
@@ -24,8 +22,6 @@ namespace EyeChaser.Transforms
         public string Caption => _wrapped.Caption;
 
         public double Probability => _wrapped.Probability;
-
-        public bool IsChildrenPopulated => throw new NotImplementedException();
 
         public int CompareTo(AlphabeticChaserNode other)
         {
