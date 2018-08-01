@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace EyeChaser.StaticModel
 {
-    public class XmlChaserNode : IChaserNode<XmlChaserNode>
+    public class XmlChaserNode : IChaserNode
     {
         static readonly List<XmlChaserNode> _empty = new List<XmlChaserNode>();
 
@@ -32,7 +32,7 @@ namespace EyeChaser.StaticModel
             remove { }
         }
 
-        public IEnumerator<XmlChaserNode> GetEnumerator()
+        public IEnumerator<IChaserNode> GetEnumerator()
         {
             return (_children ?? _empty).GetEnumerator();
         }

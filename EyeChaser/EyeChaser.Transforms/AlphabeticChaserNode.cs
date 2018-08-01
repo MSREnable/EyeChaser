@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EyeChaser.Transforms
 {
-    public class AlphabeticChaserNode : IChaserNode<AlphabeticChaserNode>, IComparable<AlphabeticChaserNode>
+    public class AlphabeticChaserNode : IChaserNode, IComparable<AlphabeticChaserNode>
     {
         readonly IChaserNode _wrapped;
 
@@ -45,7 +45,7 @@ namespace EyeChaser.Transforms
                 var probabilitySum = 0.0;
                 var maxProbability = 1.0;
 
-                var enumerable= await _wrapped.GetChildrenAsync(precision);
+                var enumerable = await _wrapped.GetChildrenAsync(precision);
                 var enumerator = enumerable.GetEnumerator();
                 while (_probabilityLimit <= maxProbability && enumerator.MoveNext())
                 {
@@ -60,7 +60,7 @@ namespace EyeChaser.Transforms
             return _sortedSet;
         }
 
-        public IEnumerator<AlphabeticChaserNode> GetEnumerator()
+        public IEnumerator<IChaserNode> GetEnumerator()
         {
             if (_sortedSet == null)
             {

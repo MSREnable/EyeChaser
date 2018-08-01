@@ -11,8 +11,7 @@ namespace EyeChaser.StaticModel.Test
     [TestClass]
     public class XnlChaserNodeTest
     {
-        static void CheckSame<T>(IChaserNode<T> expected, IChaserNode<T> actual)
-            where T : class, IChaserNode<T>
+        static void CheckSame(IChaserNode expected, IChaserNode actual)
         {
             Assert.AreEqual(expected.Caption, actual.Caption);
             Assert.AreEqual(expected.Probability, actual.Probability);
