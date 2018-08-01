@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.Controls", "EyeCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.TestShell", "EyeChaser.TestShell\EyeChaser.TestShell.csproj", "{BFA63AAA-46CF-4C42-8D49-04E549C0069F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.MokeDataMaker", "EyeChaser.MokeDataMaker\EyeChaser.MokeDataMaker.csproj", "{6A1559A3-E660-489B-9C47-A330907487C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.MockDataMaker", "EyeChaser.MockDataMaker\EyeChaser.MockDataMaker.csproj", "{6A1559A3-E660-489B-9C47-A330907487C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyeChaser.Transforms", "EyeChaser.Transforms\EyeChaser.Transforms.csproj", "{F95B1378-BB84-43C7-83A3-2CDFF3A2D08B}"
 EndProject
