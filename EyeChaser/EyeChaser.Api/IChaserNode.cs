@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace EyeChaser.Api
 {
@@ -19,6 +20,13 @@ namespace EyeChaser.Api
         /// Probability among peers of node.
         /// </summary>
         double Probability { get; }
+
+        /// <summary>
+        /// Get children of node.
+        /// </summary>
+        /// <param name="precision"></param>
+        /// <returns></returns>
+        Task<IEnumerable<IChaserNode>> GetChildrenAsync(double precision);
     }
 
     /// <summary>

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace EyeChaser.Transforms
 {
@@ -33,6 +34,30 @@ namespace EyeChaser.Transforms
         public int CompareTo(AlphabeticChaserNode other)
         {
             return Caption.CompareTo(other.Caption);
+        }
+
+        public async Task<IEnumerable<IChaserNode>> GetChildrenAsync(double precision)
+        {
+            if (_sortedSet == null)
+            {
+                _sortedSet = new SortedSet<AlphabeticChaserNode>();
+
+                var probabilitySum = 0.0;
+                var maxProbability = 1.0;
+
+                var enumerable= await _wrapped.GetChildrenAsync(precision);
+                var enumerator = enumerable.GetEnumerator();
+                while (_probabilityLimit <= maxProbability && enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+
+                    _sortedSet.Add(new AlphabeticChaserNode(current, _probabilityLimit));
+                    maxProbability = current.Probability;
+                    probabilitySum += current.Probability;
+                }
+            }
+
+            return _sortedSet;
         }
 
         public IEnumerator<AlphabeticChaserNode> GetEnumerator()

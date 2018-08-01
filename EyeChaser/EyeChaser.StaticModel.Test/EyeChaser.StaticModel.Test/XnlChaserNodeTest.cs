@@ -11,7 +11,8 @@ namespace EyeChaser.StaticModel.Test
     [TestClass]
     public class XnlChaserNodeTest
     {
-        static void CheckSame(IChaserNode expected, IChaserNode actual)
+        static void CheckSame<T>(IChaserNode<T> expected, IChaserNode<T> actual)
+            where T : class, IChaserNode<T>
         {
             Assert.AreEqual(expected.Caption, actual.Caption);
             Assert.AreEqual(expected.Probability, actual.Probability);
@@ -25,8 +26,8 @@ namespace EyeChaser.StaticModel.Test
             {
                 Assert.IsTrue(actualEnumerator.MoveNext());
 
-                var expectedChild = (IChaserNode)expectedEnumerator.Current;
-                var actualChild = (IChaserNode)actualEnumerator.Current;
+                var expectedChild = expectedEnumerator.Current;
+                var actualChild = actualEnumerator.Current;
 
                 CheckSame(expectedChild, actualChild);
 

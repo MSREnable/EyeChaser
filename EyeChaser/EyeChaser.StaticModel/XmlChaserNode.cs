@@ -37,6 +37,12 @@ namespace EyeChaser.StaticModel
             return (_children ?? _empty).GetEnumerator();
         }
 
+        public Task<IEnumerable<IChaserNode>> GetChildrenAsync(double precision)
+        {
+            IEnumerable<IChaserNode> enumerable = _children ?? _empty;
+            return Task.FromResult(enumerable);
+        }
+
         public void Add(XmlChaserNode node)
         {
             if (_children == null)
