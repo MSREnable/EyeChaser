@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace EyeChaser.Api
@@ -8,7 +6,7 @@ namespace EyeChaser.Api
     /// <summary>
     /// Untyped query result tree node.
     /// </summary>
-    public interface IChaserNode : INotifyPropertyChanged, IEnumerable<IChaserNode>, INotifyCollectionChanged
+    public interface IChaserNode
     {
         /// <summary>
         /// Display caption for node.

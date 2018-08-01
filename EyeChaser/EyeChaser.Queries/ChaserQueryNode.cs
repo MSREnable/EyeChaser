@@ -59,13 +59,11 @@ namespace EyeChaser.Queries
 
         public bool IsUpdateNeeded { get; private set; }
 
-        public Task UpdateAsync()
+        public async Task UpdateAsync()
         {
             _list.Clear();
-            IReadOnlyList<IChaserNode> children = _node.Cast<IChaserNode>().ToList();
+            var children = new List<IChaserNode>(await _node.GetChildrenAsync(0));
             _list.AddRange(children.Zip(_packingAlgorithm(children), (child, coords) => new ChaserQueryNode<Coords>(this, child, _packingAlgorithm, coords)));
-
-            return Task.FromResult(true);
         }
 
         public override string ToString()

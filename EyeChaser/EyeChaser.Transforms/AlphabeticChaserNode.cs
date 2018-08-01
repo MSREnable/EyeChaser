@@ -1,6 +1,5 @@
 ﻿using EyeChaser.Api;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -27,9 +26,6 @@ namespace EyeChaser.Transforms
         public double Probability => _wrapped.Probability;
 
         public bool IsChildrenPopulated => throw new NotImplementedException();
-
-        public event PropertyChangedEventHandler PropertyChanged { add { } remove { } }
-        public event NotifyCollectionChangedEventHandler CollectionChanged { add { } remove { } }
 
         public int CompareTo(AlphabeticChaserNode other)
         {
@@ -58,34 +54,6 @@ namespace EyeChaser.Transforms
             }
 
             return _sortedSet;
-        }
-
-        public IEnumerator<IChaserNode> GetEnumerator()
-        {
-            if (_sortedSet == null)
-            {
-                _sortedSet = new SortedSet<AlphabeticChaserNode>();
-
-                var probabilitySum = 0.0;
-                var maxProbability = 1.0;
-
-                var enumerator = _wrapped.GetEnumerator();
-                while (_probabilityLimit <= maxProbability && enumerator.MoveNext())
-                {
-                    var current = (IChaserNode)enumerator.Current;
-
-                    _sortedSet.Add(new AlphabeticChaserNode(current, _probabilityLimit));
-                    maxProbability = current.Probability;
-                    probabilitySum += current.Probability;
-                }
-            }
-
-            return _sortedSet.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using EyeChaser.Api;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -19,23 +16,6 @@ namespace EyeChaser.StaticModel
         public string Caption { get; set; }
 
         public double Probability { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged
-        {
-            add { }
-            remove { }
-        }
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged
-        {
-            add { }
-            remove { }
-        }
-
-        public IEnumerator<IChaserNode> GetEnumerator()
-        {
-            return (_children ?? _empty).GetEnumerator();
-        }
 
         public Task<IEnumerable<IChaserNode>> GetChildrenAsync(double precision)
         {
@@ -63,11 +43,6 @@ namespace EyeChaser.StaticModel
         public Task RefreshChildrenAsync()
         {
             return Task.FromResult(0);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public void WriteXml(XmlWriter writer)

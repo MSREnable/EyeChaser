@@ -11,37 +11,40 @@ namespace EyeChaser.StaticModel.Test
     [TestClass]
     public class XnlChaserNodeTest
     {
-        static void CheckSame(IChaserNode expected, IChaserNode actual)
+        static async Task CheckSameAsync(IChaserNode expected, IChaserNode actual)
         {
             Assert.AreEqual(expected.Caption, actual.Caption);
             Assert.AreEqual(expected.Probability, actual.Probability);
 
-            var expectedEnumerator = expected.GetEnumerator();
-            var actualEnumerator = actual.GetEnumerator();
+            var expectedEnumerator = (await expected.GetChildrenAsync(0)).GetEnumerator();
+            var actualEnumerator = (await actual.GetChildrenAsync(0)).GetEnumerator();
 
             var maxProbability = 1.0;
             var probabilitySum = 0.0;
+            var isLeaf = true;
             while (expectedEnumerator.MoveNext())
             {
+                isLeaf = false;
+
                 Assert.IsTrue(actualEnumerator.MoveNext());
 
                 var expectedChild = expectedEnumerator.Current;
                 var actualChild = actualEnumerator.Current;
 
-                CheckSame(expectedChild, actualChild);
+                await CheckSameAsync(expectedChild, actualChild);
 
                 Assert.IsTrue(expectedChild.Probability <= maxProbability);
                 maxProbability = expectedChild.Probability;
                 probabilitySum += expectedChild.Probability;
             }
-            Assert.IsFalse(actualEnumerator.MoveNext());
+            Assert.IsTrue(isLeaf || !actualEnumerator.MoveNext());
 
             Assert.IsTrue(0 <= maxProbability);
             Assert.IsTrue(probabilitySum <= 1.0);
         }
 
         [TestMethod]
-        public void WriteXmlTest()
+        public async Task WriteXmlTest()
         {
             var root = new XmlChaserNode { Caption = "Root Node", Probability = 1 };
             root.Add(new XmlChaserNode { Caption = "Hello", Probability = 0.5 });
@@ -63,7 +66,7 @@ namespace EyeChaser.StaticModel.Test
 
             var copyRoot = XmlChaserNode.ReadXml(reader);
 
-            CheckSame(root, copyRoot);
+            await CheckSameAsync(root, copyRoot);
         }
 
         [TestMethod]
@@ -89,7 +92,7 @@ namespace EyeChaser.StaticModel.Test
 
             var copyRoot = await XmlChaserNode.ReadXmlAsync(reader);
 
-            CheckSame(root, copyRoot);
+            await CheckSameAsync(root, copyRoot);
         }
     }
 }
