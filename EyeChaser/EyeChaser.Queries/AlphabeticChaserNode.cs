@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EyeChaser.Transforms
+namespace EyeChaser.Queries
 {
     public class AlphabeticChaserNode : IChaserNode, IComparable<AlphabeticChaserNode>
     {
