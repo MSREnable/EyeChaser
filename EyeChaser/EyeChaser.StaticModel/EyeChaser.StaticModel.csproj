@@ -38,10 +38,6 @@
       <Project>{3fa06303-8e51-4cbb-8d16-9623bdb9df5e}</Project>
       <Name>EyeChaser.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EyeChaser.Transforms\EyeChaser.Transforms.csproj">
-      <Project>{f95b1378-bb84-43c7-83a3-2cdff3a2d08b}</Project>
-      <Name>EyeChaser.Transforms</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="XmlChaserNode.cs" />

@@ -42,12 +42,9 @@
       <Project>{0d352e70-3413-42fb-8ff6-0c20beb5d51d}</Project>
       <Name>EyeChaser.StaticModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EyeChaser.Transforms\EyeChaser.Transforms.csproj">
-      <Project>{f95b1378-bb84-43c7-83a3-2cdff3a2d08b}</Project>
-      <Name>EyeChaser.Transforms</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlphabeticChaserNode.cs" />
     <Compile Include="ChaserQueryNode.cs" />
     <Compile Include="QueryEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
