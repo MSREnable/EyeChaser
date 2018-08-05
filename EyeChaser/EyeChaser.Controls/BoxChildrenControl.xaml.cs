@@ -72,7 +72,7 @@ namespace EyeChaser.Controls
 
                 if (parent.IsUpdateNeeded)
                 {
-                    await parent.UpdateAsync();
+                    await parent.UpdateAsync(0);
                 }
 
                 var childControlIndex = 0;

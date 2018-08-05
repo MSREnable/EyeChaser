@@ -59,7 +59,7 @@ namespace EyeChaser.Queries
 
         public bool IsUpdateNeeded { get; private set; }
 
-        public async Task UpdateAsync()
+        public async Task UpdateAsync(double limit)
         {
             _list.Clear();
             var children = new List<IChaserNode>(await _node.GetChildrenAsync(0));

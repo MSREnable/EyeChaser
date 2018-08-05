@@ -48,6 +48,6 @@ namespace EyeChaser.Api
         /// Update the children of the node.
         /// </summary>
         /// <returns></returns>
-        Task UpdateAsync();
+        Task UpdateAsync(double limit);
     }
 }
