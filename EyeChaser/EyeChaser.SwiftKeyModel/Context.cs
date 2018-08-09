@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using TouchType.TextPrediction;
+using System.Diagnostics;
 
 namespace EyeChaser.SwiftKeyModel
 {
@@ -27,7 +28,7 @@ namespace EyeChaser.SwiftKeyModel
 
             session.Trainer.SetParameterLearning(false); // prevents prefixes from being over-penalized
 
-            Console.Error.WriteLine("SwiftKey SDK {0}...", SwiftKeySDK.Version);
+            Debug.WriteLine("SwiftKey SDK {0}...", SwiftKeySDK.Version);
         }
 
         public void Dispose()
@@ -49,17 +50,9 @@ namespace EyeChaser.SwiftKeyModel
 
         private static void RegisterLogger()
         {
-            var colourMap = new Dictionary<LogLevel, ConsoleColor>();
-            colourMap.Add(LogLevel.Debug, ConsoleColor.DarkGray);
-            colourMap.Add(LogLevel.Warning, ConsoleColor.DarkYellow);
-            colourMap.Add(LogLevel.Severe, ConsoleColor.Red);
-
             SwiftKeySDK.Log += new LogHandler(delegate(LogLevel level, string message) 
             {
-                ConsoleColor original = Console.ForegroundColor;
-                Console.ForegroundColor = colourMap[level];
-                Console.Error.Write("[{0}]: {1}", level, message);
-                Console.ForegroundColor = original;
+                Debug.WriteLine("[{0}]: {1}", level, message);
             });
         }
 
@@ -71,7 +64,7 @@ namespace EyeChaser.SwiftKeyModel
 
             Session.Load(description);
 
-            Console.Error.WriteLine("Successfully loaded \"{0}\"", directory);
+            Debug.WriteLine("Successfully loaded \"{0}\"", directory);
         }
     }
 }
