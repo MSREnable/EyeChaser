@@ -3,9 +3,9 @@ using EyeChaser.Queries;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -90,9 +90,9 @@ namespace EyeChaser.Controls
             }
         }
 
-        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        protected override void OnMouseDown(MouseButtonEventArgs e)
         {
-            var position = e.GetCurrentPoint(this).Position;
+            var position = e.GetPosition(this);
             if (!e.Handled && 0 <= position.Y && position.Y <= ActualHeight)
             {
                 var offset = (position.Y / ActualHeight);
@@ -100,7 +100,7 @@ namespace EyeChaser.Controls
 
                 e.Handled = true;
             }
-            base.OnPointerPressed(e);
+            base.OnMouseDown(e);
         }
 
         async Task DrawChildrenAsync()

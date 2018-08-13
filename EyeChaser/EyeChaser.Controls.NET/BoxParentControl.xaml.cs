@@ -1,7 +1,7 @@
 ﻿using EyeChaser.Api;
 using EyeChaser.Queries;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using System.Windows;
+using System.Windows.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -13,7 +13,7 @@ namespace EyeChaser.Controls
             new PropertyMetadata(null));
 
         public readonly static DependencyProperty ProbabilityLimitProperty = DependencyProperty.Register(nameof(ProbabilityLimit), typeof(double), typeof(BoxParentControl),
-            new PropertyMetadata(0.01, ProbabilityLimitChanged));
+            new PropertyMetadata(double.PositiveInfinity, ProbabilityLimitChanged));
 
         public readonly static DependencyProperty HideSpacesProperty = DependencyProperty.Register(nameof(HideSpaces), typeof(bool), typeof(BoxParentControl),
             new PropertyMetadata(false));
