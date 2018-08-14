@@ -94,6 +94,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DynamicSwiftKeyModel\DynamicSwiftKeyModel.csproj">
+      <Project>{AE1D19DA-CDE2-4BB8-9E31-1F575E8EE0A4}</Project>
+      <Name>DynamicSwiftKeyModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EyeChaser.Api\EyeChaser.Api.csproj">
       <Project>{3FA06303-8E51-4CBB-8D16-9623BDB9DF5E}</Project>
       <Name>EyeChaser.Api</Name>

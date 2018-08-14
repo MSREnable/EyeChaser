@@ -1,4 +1,5 @@
-﻿using EyeChaser.Queries;
+﻿using EyeChaser.DynamicSwiftKeyModel;
+using EyeChaser.Queries;
 using EyeChaser.StaticModel;
 using System.IO;
 using System.Windows;
@@ -20,12 +21,9 @@ namespace EyeChaser.TestShell.NET
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var stream = new StringReader(Properties.Resources.MockData);
-            var settings = new XmlReaderSettings { Async = true };
-            var reader = XmlReader.Create(stream, settings);
 
-            var xmlRoot = await XmlChaserNode.ReadXmlAsync(reader);
-            var sortedRoot = new AlphabeticChaserNode(xmlRoot, 0.05);
+            var root = SwiftKeyNode.CreateRoot();
+            var sortedRoot = new AlphabeticChaserNode(root, 0.05);
 
             var engine = XmlChaserQueryEngine.Create(sortedRoot);
 
