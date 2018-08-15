@@ -82,7 +82,7 @@ namespace EyeChaser.DynamicSwiftKeyModel
                     {
                         Sequence newSeq = _seq.DropLast(0); // Clone.
                         newSeq.AddLast(p.FullPrediction);
-                        return new SwiftKeyNode(_context, _seq)
+                        return new SwiftKeyNode(_context, newSeq)
                         {
                             Caption = p.FullPrediction,
                             Probability = p.Probability / totProb
