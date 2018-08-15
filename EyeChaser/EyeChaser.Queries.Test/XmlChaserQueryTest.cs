@@ -1,4 +1,5 @@
 ﻿using EyeChaser.Queries.Test.Properties;
+using EyeChaser.StaticModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Threading.Tasks;
@@ -15,7 +16,8 @@ namespace EyeChaser.Queries.Test
             var xml = Resources.MockData;
             var reader = new StringReader(xml);
             var xmlReader = XmlReader.Create(reader, new XmlReaderSettings { Async = true });
-            var query = await XmlChaserQueryEngine.CreateAsync(xmlReader);
+            var root = await XmlChaserNode.ReadXmlAsync(xmlReader);
+            var query = XmlChaserQueryEngine.Create(root);
         }
     }
 }
