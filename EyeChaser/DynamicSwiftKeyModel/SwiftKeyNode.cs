@@ -22,7 +22,7 @@ namespace EyeChaser.DynamicSwiftKeyModel
         }
 
         // Each time we look for predictions, include everything above this, and one word for each keyboard character
-        protected const double WordProbThreshold = 0.1;
+        protected const double WordProbThreshold = 0.01;
         protected const int NResults = (int)(1.0 / WordProbThreshold);
 
         private static readonly ResultsFilter DefaultFilter =

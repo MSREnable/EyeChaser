@@ -23,7 +23,7 @@ namespace EyeChaser.TestShell.NET
         {
 
             var root = SwiftKeyNode.CreateRoot();
-            var sortedRoot = new AlphabeticChaserNode(root, 0.05);
+            var sortedRoot = new AlphabeticChaserNode(root, 0.0);
 
             var engine = XmlChaserQueryEngine.Create(sortedRoot);
 
