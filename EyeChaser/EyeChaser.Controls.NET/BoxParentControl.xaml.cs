@@ -25,14 +25,15 @@ namespace EyeChaser.Controls
 
         public Thickness TextMargin
         {
-            get { return (Thickness)GetValue(TextMarginProperty); }
-            set { SetValue(TextMarginProperty, value); }
+            get => (Thickness)GetValue(TextMarginProperty);
+            // Set only in MySizeChanged as there is only one legal value
         }
 
         static void VisibleRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (BoxParentControl)d;
             control.TheChildren.VisibleRange = control.VisibleRange;
+            MySizeChanged(control, null); // Update TextMargin
         }
 
         static void ProbabilityLimitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -50,6 +51,7 @@ namespace EyeChaser.Controls
         public BoxParentControl()
         {
             this.InitializeComponent();
+            SizeChanged += new SizeChangedEventHandler(MySizeChanged);
         }
 
         public IChaserQueryNode<Range1D> Node
@@ -74,6 +76,14 @@ namespace EyeChaser.Controls
         {
             get { return (Range1D)GetValue(VisibleRangeProperty); }
             set { SetValue(VisibleRangeProperty, value); }
+        }
+
+        private static void MySizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var control = (BoxParentControl)sender;
+            if (double.IsNaN(control.Height)) return;
+            var t = new Thickness(0, control.Height * control.VisibleRange.LowerBound, 0, control.Height * (1.0 - control.VisibleRange.UpperBound));
+            control.SetValue(TextMarginProperty, t);
         }
     }
 }
