@@ -17,7 +17,7 @@
             </Grid.ColumnDefinitions>
 
             <Border BorderBrush="Gray" BorderThickness="1">
-                <Viewbox StretchDirection="DownOnly">
+                <Viewbox x:Name="TextWrapper" StretchDirection="DownOnly" Margin="{Binding TextMargin, ElementName=userControl, Mode=OneWay}">
                     <TextBlock Grid.Column="0" Text="{Binding Node.Caption, Mode=OneWay, ElementName=userControl}" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Viewbox>
             </Border>

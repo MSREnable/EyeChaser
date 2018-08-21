@@ -165,6 +165,7 @@ namespace EyeChaser.Controls
                         control.Width = ActualWidth;
                         control.ProbabilityLimit = limit / overallProb;
                         control.Height = height * overallProb;
+                        control.TextMargin = new Thickness(0, control.Height * control.VisibleRange.LowerBound, 0, control.Height * (1.0-control.VisibleRange.UpperBound));
 
                         Canvas.SetTop(control, height * startPosition);
                     }

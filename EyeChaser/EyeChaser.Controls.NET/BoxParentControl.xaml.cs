@@ -21,6 +21,14 @@ namespace EyeChaser.Controls
         public readonly static DependencyProperty VisibleRangeProperty = DependencyProperty.Register(nameof(VisibleRange), typeof(Range1D), typeof(BoxParentControl),
             new PropertyMetadata(new Range1D(0, 1), VisibleRangeChanged));
 
+        public readonly static DependencyProperty TextMarginProperty = DependencyProperty.Register(nameof(TextMargin), typeof(Thickness), typeof(BoxParentControl), new PropertyMetadata(new Thickness(0), TextMarginChanged));
+
+        public Thickness TextMargin
+        {
+            get { return (Thickness)GetValue(TextMarginProperty); }
+            set { SetValue(TextMarginProperty, value); }
+        }
+
         static void VisibleRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (BoxParentControl)d;
@@ -31,6 +39,12 @@ namespace EyeChaser.Controls
         {
             var control = (BoxParentControl)d;
             control.TheChildren.ProbabilityLimit = control.ProbabilityLimit;
+        }
+
+        static void TextMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (BoxParentControl)d;
+            control.TextWrapper.Margin = control.TextMargin;
         }
 
         public BoxParentControl()
